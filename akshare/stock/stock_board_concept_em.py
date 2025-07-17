@@ -7,7 +7,8 @@ https://quote.eastmoney.com/center/boardlist.html#concept_board
 """
 
 import re
-from functools import lru_cache
+# from functools import lru_cache
+from ..utils.redis_cache import lru_cache
 
 import pandas as pd
 import requests
@@ -15,7 +16,9 @@ import requests
 from akshare.utils.func import fetch_paginated_data
 
 
-@lru_cache()
+@lru_cache(
+        func_key='em:gn_to_infos'
+)
 def __stock_board_concept_name_em() -> pd.DataFrame:
     """
     东方财富网-行情中心-沪深京板块-概念板块-名称
