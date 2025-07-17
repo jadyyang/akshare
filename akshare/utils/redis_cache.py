@@ -47,16 +47,25 @@ class RedisLRUCache:
         self.max_age = max_age
         # self.key_version = key_version
         self.func_key = func_key
-        # self.serialize_method = serialize_method
+        self.serialize_method = serialize_method
         
-        # Initialize Redis client
+        # Store Redis client configuration for lazy initialization
         if redis_client:
             self.redis_client = redis_client
+            self._redis_client_configured = True
         else:
-            self.redis_client = self._create_redis_client()
+            self.redis_client = None
+            self._redis_client_configured = False
             
         # Initialize serializer
         self._init_serializer()
+    
+    def _get_redis_client(self) -> Union[redis.Redis, RedisCluster]:
+        """Get Redis client, creating it lazily if needed"""
+        if self.redis_client is None and not self._redis_client_configured:
+            self.redis_client = self._create_redis_client()
+            self._redis_client_configured = True
+        return self.redis_client
     
     def _create_redis_client(self) -> Union[redis.Redis, RedisCluster]:
         """Create Redis client from URL"""
@@ -192,7 +201,8 @@ class RedisLRUCache:
     def get(self, key: str) -> Any:
         """Get value from cache"""
         try:
-            cached_data = self.redis_client.get(key)
+            redis_client = self._get_redis_client()
+            cached_data = redis_client.get(key)
             if cached_data is None:
                 return None
             return self.deserialize(cached_data)
@@ -205,9 +215,10 @@ class RedisLRUCache:
     def set(self, key: str, value: Any, expire: Optional[int] = None) -> bool:
         """Set value in cache"""
         try:
+            redis_client = self._get_redis_client()
             serialized_data = self.serialize(value)
             expire_time = expire or self.max_age
-            self.redis_client.setex(key, expire_time, serialized_data)
+            redis_client.setex(key, expire_time, serialized_data)
             return True
         except Exception as e:
             # FIXME: 测试用
@@ -218,7 +229,8 @@ class RedisLRUCache:
     def delete(self, key: str) -> bool:
         """Delete key from cache"""
         try:
-            return bool(self.redis_client.delete(key))
+            redis_client = self._get_redis_client()
+            return bool(redis_client.delete(key))
         except Exception as e:
             # FIXME: 测试用
             print(f"[redis client] - Failed to delete from cache: {e}")
@@ -228,10 +240,11 @@ class RedisLRUCache:
     def clear_prefix(self, pattern: Optional[str] = None) -> int:
         """Clear all keys with prefix"""
         try:
+            redis_client = self._get_redis_client()
             pattern = pattern or f"{self.prefix}:*"
-            keys = self.redis_client.keys(pattern)
+            keys = redis_client.keys(pattern)
             if keys:
-                return self.redis_client.delete(*keys)
+                return redis_client.delete(*keys)
             return 0
         except Exception as e:
             # FIXME: 测试用
