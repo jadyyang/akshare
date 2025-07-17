@@ -83,6 +83,8 @@ class RedisLRUCache:
             else:
                 return redis.from_url(self.redis_url, decode_responses=False)
         except Exception as e:
+            # FIXME: 测试用
+            print(f"[redis client] - Failed to create Redis client: {e}")
             logger.warning(f"Failed to create Redis client: {e}")
             logger.warning("Falling back to localhost Redis")
             return redis.Redis(host='localhost', port=6379, decode_responses=False)
@@ -172,6 +174,8 @@ class RedisLRUCache:
             return args_repr
             
         except Exception as e:
+            # FIXME: 测试用
+            print(f"[redis client] - Failed to serialize args normally, using pickle: {e}")
             logger.warning(f"Failed to serialize args normally, using pickle: {e}")
             # Fallback to pickle for key generation
             try:
@@ -179,6 +183,8 @@ class RedisLRUCache:
                 pickled = pickle.dumps(combined)
                 return hashlib.md5(pickled).hexdigest()
             except Exception as e2:
+                # FIXME: 测试用
+                print(f"[redis client] - Pickle fallback also failed: {e2}")
                 logger.warning(f"Pickle fallback also failed: {e2}")
                 # Ultimate fallback - use string representation
                 return str((args, kwargs))
@@ -191,6 +197,8 @@ class RedisLRUCache:
                 return None
             return self.deserialize(cached_data)
         except Exception as e:
+            # FIXME: 测试用
+            print(f"[redis client] - Failed to get from cache: {e}")
             logger.warning(f"Failed to get from cache: {e}")
             return None
     
@@ -202,6 +210,8 @@ class RedisLRUCache:
             self.redis_client.setex(key, expire_time, serialized_data)
             return True
         except Exception as e:
+            # FIXME: 测试用
+            print(f"[redis client] - Failed to set cache: {e}")
             logger.warning(f"Failed to set cache: {e}")
             return False
     
@@ -210,6 +220,8 @@ class RedisLRUCache:
         try:
             return bool(self.redis_client.delete(key))
         except Exception as e:
+            # FIXME: 测试用
+            print(f"[redis client] - Failed to delete from cache: {e}")
             logger.warning(f"Failed to delete from cache: {e}")
             return False
     
@@ -222,6 +234,8 @@ class RedisLRUCache:
                 return self.redis_client.delete(*keys)
             return 0
         except Exception as e:
+            # FIXME: 测试用
+            print(f"[redis client] - Failed to clear cache: {e}")
             logger.warning(f"Failed to clear cache: {e}")
             return 0
 
@@ -310,10 +324,14 @@ def lru_cache(
             # Try to get from cache
             cached_result = cache.get(cache_key)
             if cached_result is not None:
+                # FIXME: 测试用
+                print(f"[redis client] - Cache hit for {func.__name__}")
                 logger.debug(f"Cache hit for {func.__name__}")
                 return cached_result
             
             # Cache miss - execute function
+            # FIXME: 测试用
+            print(f"[redis client] - Cache miss for {func.__name__}")
             logger.debug(f"Cache miss for {func.__name__}")
             result = func(*args, **kwargs)
             
