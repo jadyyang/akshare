@@ -377,30 +377,3 @@ def configure_default_cache(**kwargs):
     global _default_cache
     _default_cache = RedisLRUCache(**kwargs)
 
-
-if __name__ == "__main__":
-    # Example usage and testing
-    import time
-    
-    # Test basic functionality
-    @lru_cache(max_age=10)
-    def test_function(x, y=1):
-        """Test function for cache"""
-        print(f"Computing {x} + {y}")
-        time.sleep(1)  # Simulate expensive operation
-        return x + y
-    
-    # Test the cache
-    print("First call:")
-    result1 = test_function(1, y=2)
-    print(f"Result: {result1}")
-    
-    print("\nSecond call (should be cached):")
-    result2 = test_function(1, y=2)
-    print(f"Result: {result2}")
-    
-    print("\nThird call with different args:")
-    result3 = test_function(2, y=3)
-    print(f"Result: {result3}")
-    
-    print(f"\nCache info: {test_function.cache_info()}")
