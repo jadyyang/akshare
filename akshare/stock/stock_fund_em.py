@@ -8,7 +8,8 @@ https://data.eastmoney.com/zjlx/detail.html
 
 import math
 import time
-from functools import lru_cache
+# from functools import lru_cache
+from ..utils.redis_cache import lru_cache
 
 import pandas as pd
 import requests
@@ -647,7 +648,9 @@ def stock_sector_fund_flow_rank(
     return temp_df
 
 
-@lru_cache()
+@lru_cache(
+    func_key='em:hy_to_ids',
+)
 def _get_stock_sector_fund_flow_summary_code() -> dict:
     """
     东方财富网-数据中心-资金流向-行业板块
@@ -1046,7 +1049,9 @@ def stock_sector_fund_flow_hist(symbol: str = "汽车服务") -> pd.DataFrame:
     return temp_df
 
 
-@lru_cache()
+@lru_cache(
+    func_key='em:gn_to_ids',
+)
 def _get_stock_concept_fund_flow_summary_code() -> dict:
     """
     东方财富网-数据中心-资金流向-概念资金流
