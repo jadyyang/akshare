@@ -7,7 +7,8 @@ Desc: 股票基本信息
 
 import json
 import warnings
-from functools import lru_cache
+# from functools import lru_cache
+from ..utils.redis_cache import lru_cache
 from io import BytesIO
 from io import StringIO
 
@@ -16,7 +17,9 @@ import requests
 from akshare.utils.tqdm import get_tqdm
 
 
-@lru_cache()
+@lru_cache(
+    func_key='a:sz:name_codes',
+)
 def stock_info_sz_name_code(symbol: str = "A股列表") -> pd.DataFrame:
     """
     深圳证券交易所-股票列表
@@ -118,7 +121,9 @@ def stock_info_sz_name_code(symbol: str = "A股列表") -> pd.DataFrame:
         return temp_df
 
 
-@lru_cache()
+@lru_cache(
+    func_key='a:sh:name_codes',
+)
 def stock_info_sh_name_code(symbol: str = "主板A股") -> pd.DataFrame:
     """
     上海证券交易所-股票列表
@@ -177,7 +182,9 @@ def stock_info_sh_name_code(symbol: str = "主板A股") -> pd.DataFrame:
     return temp_df
 
 
-@lru_cache()
+@lru_cache(
+    func_key='a:bj:name_codes',
+)
 def stock_info_bj_name_code() -> pd.DataFrame:
     """
     北京证券交易所-股票列表
@@ -432,7 +439,9 @@ def stock_info_change_name(symbol: str = "000503") -> pd.DataFrame:
         return pd.DataFrame()
 
 
-@lru_cache()
+@lru_cache(
+    func_key='a:name_codes',
+)
 def stock_info_a_code_name() -> pd.DataFrame:
     """
     沪深京 A 股列表

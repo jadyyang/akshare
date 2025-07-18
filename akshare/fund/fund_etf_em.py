@@ -6,7 +6,8 @@ Desc: 东方财富-ETF行情
 https://quote.eastmoney.com/sh513500.html
 """
 
-from functools import lru_cache
+# from functools import lru_cache
+from ..utils.redis_cache import lru_cache
 
 import pandas as pd
 import requests
@@ -14,7 +15,9 @@ import requests
 from akshare.utils.func import fetch_paginated_data
 
 
-@lru_cache()
+@lru_cache(
+    func_key='em:etf:code_to_ids',
+)
 def _fund_etf_code_id_map_em() -> dict:
     """
     东方财富-ETF代码和市场标识映射

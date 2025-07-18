@@ -17,7 +17,7 @@ from akshare.utils.func import fetch_paginated_data
 
 
 @lru_cache(
-        func_key='em:gn_to_infos'
+    func_key='em:gn_to_infos'
 )
 def __stock_board_concept_name_em() -> pd.DataFrame:
     """
