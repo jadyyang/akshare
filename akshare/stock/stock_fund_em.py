@@ -668,7 +668,7 @@ def _get_stock_sector_fund_flow_summary_code() -> dict:
         "fltt": "2",
         "invt": "2",
         "ut": "8dec03ba335b81bf4ebdf7b29ec27d15",
-        "fs": "m:90 t:3",
+        "fs": "m:90 t:2",
         "fields": "f12,f14,f2,f3,f62,f184,f66,f69,f72,f75,f78,f81,f84,f87,f204,f205,f124,f1,f13",
     }
     temp_df = fetch_paginated_data(url, params)
