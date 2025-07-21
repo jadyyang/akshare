@@ -13,7 +13,7 @@ import time
 import pandas as pd
 import requests
 
-from akshare.fx.cons import (
+from .cons import (
     SHORT_HEADERS,
     FX_SPOT_URL,
     FX_SWAP_URL,

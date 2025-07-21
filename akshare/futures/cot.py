@@ -27,9 +27,9 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.futures import cons
-from akshare.futures.requests_fun import requests_link
-from akshare.futures.symbol_var import symbol_varieties
+from . import cons
+from .requests_fun import requests_link
+from .symbol_var import symbol_varieties
 
 calendar = cons.get_calendar()
 rank_columns = [

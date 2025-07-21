@@ -15,9 +15,9 @@ import requests
 from bs4 import BeautifulSoup
 import py_mini_racer
 
-from akshare.datasets import get_ths_js
-from akshare.utils import demjson
-from akshare.utils.tqdm import get_tqdm
+from ..datasets import get_ths_js
+from ..utils import demjson
+from ..utils.tqdm import get_tqdm
 
 
 def _get_file_content_ths(file: str = "ths.js") -> str:

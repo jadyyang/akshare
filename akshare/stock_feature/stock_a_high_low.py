@@ -9,7 +9,7 @@ https://www.legulegu.com/stockdata/high-low-statistics
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def stock_a_high_low_statistics(symbol: str = "all") -> pd.DataFrame:

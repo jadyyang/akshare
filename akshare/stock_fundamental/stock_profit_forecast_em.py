@@ -9,7 +9,7 @@ https://data.eastmoney.com/report/profitforecast.jshtml
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_profit_forecast_em(symbol: str = "") -> pd.DataFrame:

@@ -8,7 +8,7 @@ https://data.eastmoney.com/shibor/shibor.aspx
 
 import pandas as pd
 import requests
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def rate_interbank(

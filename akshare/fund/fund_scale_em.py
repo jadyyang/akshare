@@ -9,7 +9,7 @@ https://fund.eastmoney.com/data/cyrjglist.html
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def fund_scale_change_em() -> pd.DataFrame:

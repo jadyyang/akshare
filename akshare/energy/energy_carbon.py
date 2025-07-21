@@ -26,8 +26,8 @@ import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
-from akshare.utils import demjson
-from akshare.utils.cons import headers
+from ..utils import demjson
+from ..utils.cons import headers
 
 
 def energy_carbon_domestic(symbol: str = "湖北") -> pd.DataFrame:

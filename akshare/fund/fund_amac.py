@@ -9,7 +9,7 @@ Desc: 中国证券投资基金业协会-信息公示数据
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "

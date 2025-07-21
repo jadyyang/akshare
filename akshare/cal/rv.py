@@ -33,7 +33,7 @@ def rv_from_stock_zh_a_hist_min_em(
     :return: 整理后的分钟行情数据,包含Date(索引),Open,High,Low,Close列
     :rtype: pandas.DataFrame
     """
-    from akshare.stock_feature.stock_hist_em import stock_zh_a_hist_min_em
+    from ..stock_feature.stock_hist_em import stock_zh_a_hist_min_em
 
     temp_df = stock_zh_a_hist_min_em(
         symbol=symbol,
@@ -71,7 +71,7 @@ def rv_from_futures_zh_minute_sina(
     :return: 整理后的分钟行情数据,包含Date(索引),Open,High,Low,Close列
     :rtype: pandas.DataFrame
     """
-    from akshare.futures.futures_zh_sina import futures_zh_minute_sina
+    from ..futures.futures_zh_sina import futures_zh_minute_sina
 
     temp_df = futures_zh_minute_sina(symbol=symbol, period=period)
     temp_df.rename(

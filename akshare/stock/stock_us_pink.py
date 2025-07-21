@@ -9,7 +9,7 @@ https://quote.eastmoney.com/center/gridlist.html#us_pinksheet
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_us_pink_spot_em() -> pd.DataFrame:

@@ -9,7 +9,7 @@ https://vip.stock.finance.sina.com.cn/fund_center/index.html#jjgmall
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def fund_scale_open_sina(symbol: str = "股票型基金") -> pd.DataFrame:

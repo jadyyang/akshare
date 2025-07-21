@@ -12,8 +12,8 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.request import make_request_with_retry_json
-from akshare.utils.cons import headers
+from ..request import make_request_with_retry_json
+from ..utils.cons import headers
 
 
 def stock_info_cjzc_em() -> pd.DataFrame:

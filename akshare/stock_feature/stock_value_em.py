@@ -8,7 +8,7 @@ https://data.eastmoney.com/gzfx/detail/300766.html
 
 import pandas as pd
 
-from akshare.request import make_request_with_retry_json
+from ..request import make_request_with_retry_json
 
 
 def stock_value_em(symbol: str = "300766") -> pd.DataFrame:

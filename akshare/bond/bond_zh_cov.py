@@ -13,16 +13,16 @@ import pandas as pd
 import py_mini_racer
 import requests
 
-from akshare.bond.cons import (
+from .cons import (
     zh_sina_bond_hs_cov_count_url,
     zh_sina_bond_hs_cov_payload,
     zh_sina_bond_hs_cov_url,
     zh_sina_bond_hs_cov_hist_url,
 )
-from akshare.stock.cons import hk_js_decode
-from akshare.utils import demjson
-from akshare.utils.func import fetch_paginated_data
-from akshare.utils.tqdm import get_tqdm
+from ..stock.cons import hk_js_decode
+from ..utils import demjson
+from ..utils.func import fetch_paginated_data
+from ..utils.tqdm import get_tqdm
 
 
 def _get_zh_bond_hs_cov_page_count() -> int:

@@ -10,7 +10,7 @@ import pandas as pd
 import requests
 import py_mini_racer
 
-from akshare.datasets import get_ths_js
+from ..datasets import get_ths_js
 
 
 def _get_file_content_cninfo(file: str = "cninfo.js") -> str:

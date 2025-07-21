@@ -8,9 +8,9 @@ https://data.eastmoney.com/yzxdr/
 
 import pandas as pd
 import requests
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def stock_yzxdr_em(date: str = "20240930") -> pd.DataFrame:

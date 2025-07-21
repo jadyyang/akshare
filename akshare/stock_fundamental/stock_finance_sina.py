@@ -18,7 +18,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_financial_report_sina(

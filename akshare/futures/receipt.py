@@ -15,9 +15,9 @@ from typing import List
 import pandas as pd
 import requests
 
-from akshare.futures import cons
-from akshare.futures.requests_fun import requests_link, pandas_read_html_link
-from akshare.futures.symbol_var import chinese_to_english
+from . import cons
+from .requests_fun import requests_link, pandas_read_html_link
+from .symbol_var import chinese_to_english
 
 calendar = cons.get_calendar()
 shfe_20100126 = pd.DataFrame(

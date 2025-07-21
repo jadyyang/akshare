@@ -9,7 +9,7 @@ https://irm.cninfo.com.cn/
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def _fetch_org_id(symbol: str = "000001") -> str:

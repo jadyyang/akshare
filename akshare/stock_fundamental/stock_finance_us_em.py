@@ -9,7 +9,7 @@ https://emweb.eastmoney.com/PC_USF10/pages/index.html?code=TSLA&type=web&color=w
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def __stock_financial_us_report_query_market_em(symbol: str = "TSLA") -> str:

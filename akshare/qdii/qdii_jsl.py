@@ -8,7 +8,7 @@ Desc: 集思录-T+0 QDII
 
 import pandas as pd
 
-from akshare.request import make_request_with_retry_json
+from ..request import make_request_with_retry_json
 
 
 def qdii_e_index_jsl() -> pd.DataFrame:

@@ -11,7 +11,7 @@ https://www.sge.com.cn/sjzx/mrhq
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def spot_symbol_table_sge() -> pd.DataFrame:

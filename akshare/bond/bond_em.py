@@ -8,7 +8,7 @@ https://data.eastmoney.com/cjsj/zmgzsyl.html
 
 import pandas as pd
 import requests
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def bond_zh_us_rate(start_date: str = "19901219") -> pd.DataFrame:

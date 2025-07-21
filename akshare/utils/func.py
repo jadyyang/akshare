@@ -10,7 +10,7 @@ from typing import List, Dict
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def fetch_paginated_data(url: str, base_params: Dict, timeout: int = 15):

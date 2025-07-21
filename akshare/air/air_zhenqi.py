@@ -17,7 +17,7 @@ import pandas as pd
 import requests
 from py_mini_racer import MiniRacer
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def _get_js_path(name: str = None, module_file: str = None) -> str:

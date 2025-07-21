@@ -9,7 +9,7 @@ https://www.szse.cn/disclosure/margin/object/index.html
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_margin_account_info() -> pd.DataFrame:

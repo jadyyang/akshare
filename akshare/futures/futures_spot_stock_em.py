@@ -9,7 +9,7 @@ https://data.eastmoney.com/ifdata/xhgp.html
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def futures_spot_stock(symbol: str = "能源") -> pd.DataFrame:

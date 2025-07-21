@@ -12,7 +12,7 @@ import pandas as pd
 import py_mini_racer
 import requests
 
-from akshare.stock_feature.stock_a_indicator import get_cookie_csrf
+from .stock_a_indicator import get_cookie_csrf
 
 hash_code = """
 function e(n) {

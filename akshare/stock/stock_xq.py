@@ -43,7 +43,7 @@ def stock_individual_spot_xq(
     :return: 证券最新行情
     :rtype: pandas.DataFrame
     """
-    from akshare.stock.cons import xq_a_token
+    from .cons import xq_a_token
     session = requests.Session()
     xq_a_token = token or xq_a_token
     headers = {

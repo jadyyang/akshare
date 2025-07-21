@@ -8,7 +8,7 @@ https://data.eastmoney.com/other/valueAnal.html
 
 import pandas as pd
 
-from akshare.utils.func import fetch_paginated_data
+from ..utils.func import fetch_paginated_data
 
 
 def option_value_analysis_em() -> pd.DataFrame:

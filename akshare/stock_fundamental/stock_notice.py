@@ -11,7 +11,7 @@ import math
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_notice_report(symbol: str = "全部", date: str = "20220511") -> pd.DataFrame:

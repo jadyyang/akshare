@@ -13,8 +13,8 @@ from io import StringIO
 import pandas as pd
 import requests
 
-from akshare.bond.bond_china_money import bond_china_close_return_map
-from akshare.utils.cons import headers
+from .bond_china_money import bond_china_close_return_map
+from ..utils.cons import headers
 
 
 def bond_spot_quote() -> pd.DataFrame:

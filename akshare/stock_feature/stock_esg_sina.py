@@ -7,7 +7,7 @@ https://finance.sina.com.cn/esg/
 """
 
 import math
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 import pandas as pd
 import requests

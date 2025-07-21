@@ -8,8 +8,8 @@ https://data.eastmoney.com/invest/invest/list.html
 
 import pandas as pd
 import requests
-from akshare.utils.tqdm import get_tqdm
-from akshare.utils.cons import headers
+from ..utils.tqdm import get_tqdm
+from ..utils.cons import headers
 
 
 def stock_analyst_rank_em(year: str = "2024") -> pd.DataFrame:

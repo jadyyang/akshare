@@ -12,8 +12,8 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils.tqdm import get_tqdm
-from akshare.utils.cons import headers
+from ..utils.tqdm import get_tqdm
+from ..utils.cons import headers
 
 
 def stock_lh_yyb_most() -> pd.DataFrame:

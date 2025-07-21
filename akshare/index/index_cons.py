@@ -14,7 +14,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def index_stock_cons_sina(symbol: str = "000300") -> pd.DataFrame:

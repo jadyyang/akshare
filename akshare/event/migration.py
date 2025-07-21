@@ -10,7 +10,7 @@ import json
 import pandas as pd
 import requests
 
-from akshare.event.cons import province_dict, city_dict
+from .cons import province_dict, city_dict
 
 
 def migration_area_baidu(

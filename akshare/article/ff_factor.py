@@ -11,7 +11,7 @@ from io import StringIO
 import pandas as pd
 import requests
 
-from akshare.article.cons import ff_home_url
+from .cons import ff_home_url
 
 
 def article_ff_crr() -> pd.DataFrame:

@@ -12,7 +12,7 @@ from typing import AnyStr
 import pandas as pd
 import requests
 
-from akshare.futures.cons import (
+from ..futures.cons import (
     QHKC_FUND_BS_URL,
     QHKC_FUND_POSITION_URL,
     QHKC_FUND_POSITION_CHANGE_URL,

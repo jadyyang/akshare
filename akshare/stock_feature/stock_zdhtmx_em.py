@@ -8,7 +8,7 @@ https://data.eastmoney.com/zdht/mx.html
 
 import pandas as pd
 import requests
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_zdhtmx_em(

@@ -9,8 +9,8 @@ https://data.eastmoney.com/kcb/?type=nsb
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
-from akshare.utils.tqdm import get_tqdm
+from ..utils.cons import headers
+from ..utils.tqdm import get_tqdm
 
 
 def stock_register_kcb() -> pd.DataFrame:

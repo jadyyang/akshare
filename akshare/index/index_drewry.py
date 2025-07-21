@@ -11,7 +11,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def drewry_wci_index(symbol: str = "composite") -> pd.DataFrame:

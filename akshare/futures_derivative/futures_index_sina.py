@@ -11,12 +11,12 @@ from io import StringIO
 import pandas as pd
 import requests
 
-from akshare.futures.cons import (
+from ..futures.cons import (
     zh_subscribe_exchange_symbol_url,
     zh_match_main_contract_url,
     zh_match_main_contract_payload,
 )
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def zh_subscribe_exchange_symbol(symbol: str = "dce") -> pd.DataFrame:

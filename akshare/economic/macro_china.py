@@ -13,11 +13,11 @@ import time
 import pandas as pd
 import requests
 
-from akshare.economic.cons import (
+from .cons import (
     JS_CHINA_ENERGY_DAILY_URL,
 )
-from akshare.utils import demjson
-from akshare.utils.tqdm import get_tqdm
+from ..utils import demjson
+from ..utils.tqdm import get_tqdm
 
 
 def __macro_china_base_func(symbol: str, params: dict) -> pd.DataFrame:

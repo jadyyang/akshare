@@ -8,7 +8,7 @@ https://data.eastmoney.com/other/premium.html
 
 import pandas as pd
 
-from akshare.utils.func import fetch_paginated_data
+from ..utils.func import fetch_paginated_data
 
 
 def option_premium_analysis_em() -> pd.DataFrame:

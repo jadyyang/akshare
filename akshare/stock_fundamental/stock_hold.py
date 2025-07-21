@@ -11,7 +11,7 @@ from io import StringIO
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def stock_institute_hold(symbol: str = "20051") -> pd.DataFrame:

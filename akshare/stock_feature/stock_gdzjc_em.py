@@ -9,7 +9,7 @@ https://data.eastmoney.com/executive/gdzjc.html
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_ggcg_em(symbol: str = "全部") -> pd.DataFrame:

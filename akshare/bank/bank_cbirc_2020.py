@@ -16,7 +16,7 @@ import pandas as pd
 import requests
 from tqdm import tqdm
 
-from akshare.bank.cons import cbirc_headers_without_cookie_2020
+from .cons import cbirc_headers_without_cookie_2020
 
 
 def bank_fjcf_total_num(item: str = "分局本级") -> int:

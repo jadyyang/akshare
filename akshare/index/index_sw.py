@@ -13,7 +13,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def sw_index_first_info() -> pd.DataFrame:

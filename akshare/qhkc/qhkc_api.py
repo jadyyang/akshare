@@ -5,7 +5,7 @@ Date: 2025/4/10 18:00
 Desc: 接口测试文件
 """
 
-from akshare.pro.data_pro import pro_api
+from ..pro.data_pro import pro_api
 
 pro = pro_api()
 

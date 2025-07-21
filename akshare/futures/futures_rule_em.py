@@ -8,7 +8,7 @@ https://portal.eastmoneyfutures.com/pages/service/jyts.html#jyrl
 
 import pandas as pd
 import requests
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def futures_rule_em() -> pd.DataFrame:

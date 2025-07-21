@@ -9,7 +9,7 @@ http://i.gasgoo.com/data/ranking
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def car_sale_rank_gasgoo(symbol: str = "车企榜", date: str = "202109") -> pd.DataFrame:

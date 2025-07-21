@@ -11,9 +11,9 @@ import datetime
 import pandas as pd
 import requests
 
-from akshare.index.index_stock_zh import get_tx_start_year
-from akshare.utils import demjson
-from akshare.utils.tqdm import get_tqdm
+from ..index.index_stock_zh import get_tx_start_year
+from ..utils import demjson
+from ..utils.tqdm import get_tqdm
 
 
 def stock_zh_a_hist_tx(

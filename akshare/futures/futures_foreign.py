@@ -12,7 +12,7 @@ from io import StringIO
 import pandas as pd
 import requests
 
-from akshare.futures.futures_hq_sina import (
+from .futures_hq_sina import (
     futures_foreign_commodity_subscribe_exchange_symbol,
 )
 

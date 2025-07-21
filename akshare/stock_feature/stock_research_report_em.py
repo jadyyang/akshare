@@ -10,7 +10,7 @@ import datetime
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_research_report_em(symbol: str = "000001") -> pd.DataFrame:

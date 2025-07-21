@@ -14,7 +14,7 @@ https://data.eastmoney.com/bbsj/202003/xjll.html
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_zcfz_em(date: str = "20240331") -> pd.DataFrame:

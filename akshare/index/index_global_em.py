@@ -9,7 +9,7 @@ https://quote.eastmoney.com/center/gridlist.html#global_qtzs
 import pandas as pd
 import requests
 
-from akshare.index.cons import index_global_em_symbol_map
+from .cons import index_global_em_symbol_map
 
 
 def index_global_spot_em() -> pd.DataFrame:

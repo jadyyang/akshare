@@ -8,7 +8,7 @@ https://quote.eastmoney.com/center/qqsc.html
 
 import pandas as pd
 import requests
-from akshare.utils.func import fetch_paginated_data
+from ..utils.func import fetch_paginated_data
 
 
 def option_current_em() -> pd.DataFrame:

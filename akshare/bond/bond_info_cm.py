@@ -10,8 +10,8 @@ import functools
 
 import pandas as pd
 import requests
-from akshare.utils.tqdm import get_tqdm
-from akshare.bond.bond_china import bond_china_close_return_map
+from ..utils.tqdm import get_tqdm
+from .bond_china import bond_china_close_return_map
 
 
 @functools.lru_cache()

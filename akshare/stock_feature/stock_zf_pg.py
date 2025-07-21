@@ -12,7 +12,7 @@ https://data.eastmoney.com/xg/pg/
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_qbzf_em() -> pd.DataFrame:

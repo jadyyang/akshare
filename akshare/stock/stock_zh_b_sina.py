@@ -14,7 +14,7 @@ import pandas as pd
 import requests
 import py_mini_racer
 
-from akshare.stock.cons import (
+from .cons import (
     zh_sina_a_stock_url,
     zh_sina_a_stock_hist_url,
     hk_js_decode,
@@ -22,7 +22,7 @@ from akshare.stock.cons import (
     zh_sina_a_stock_qfq_url,
     zh_sina_a_stock_amount_url,
 )
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 @lru_cache()

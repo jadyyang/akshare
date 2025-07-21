@@ -9,7 +9,7 @@ https://www.legulegu.com/stockdata/below-net-asset-statistics
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def stock_a_below_net_asset_statistics(symbol: str = "全部A股") -> pd.DataFrame:

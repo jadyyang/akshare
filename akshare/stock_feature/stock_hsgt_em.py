@@ -11,8 +11,8 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils.tqdm import get_tqdm
-from akshare.utils.func import fetch_paginated_data
+from ..utils.tqdm import get_tqdm
+from ..utils.func import fetch_paginated_data
 
 
 def stock_hsgt_fund_flow_summary_em() -> pd.DataFrame:

@@ -19,9 +19,9 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import py_mini_racer
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
-from akshare.datasets import get_ths_js
+from ..datasets import get_ths_js
 
 
 def _get_file_content_ths(file: str = "ths.js") -> str:

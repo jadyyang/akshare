@@ -12,7 +12,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_lhb_detail_daily_sina(date: str = "20240222") -> pd.DataFrame:

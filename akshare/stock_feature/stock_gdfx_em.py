@@ -9,7 +9,7 @@ https://data.eastmoney.com/gdfx/
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_gdfx_free_holding_statistics_em(

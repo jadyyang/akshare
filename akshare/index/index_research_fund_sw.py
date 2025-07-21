@@ -9,7 +9,7 @@ https://www.swsresearch.com/institute_sw/allIndex/releasedIndex
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def index_realtime_fund_sw(symbol: str = "基础一级") -> pd.DataFrame:

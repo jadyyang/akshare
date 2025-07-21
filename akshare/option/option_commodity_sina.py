@@ -10,7 +10,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def option_commodity_contract_sina(symbol: str = "玉米期权") -> pd.DataFrame:

@@ -14,7 +14,7 @@ from io import BytesIO
 import pandas as pd
 import requests
 
-from akshare.option.cons import (
+from .cons import (
     SH_OPTION_PAYLOAD,
     SH_OPTION_PAYLOAD_OTHER,
     SH_OPTION_URL_50,

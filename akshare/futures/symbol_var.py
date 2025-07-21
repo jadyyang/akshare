@@ -7,7 +7,7 @@ Desc: 期货品种映射表
 
 import re
 
-from akshare.futures import cons
+from . import cons
 
 
 def symbol_varieties(contract_code: str):

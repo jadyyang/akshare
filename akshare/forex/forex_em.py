@@ -9,8 +9,8 @@ https://quote.eastmoney.com/center/gridlist.html#forex_all
 import pandas as pd
 import requests
 
-from akshare.forex.cons import symbol_market_map
-from akshare.utils.func import fetch_paginated_data
+from .cons import symbol_market_map
+from ..utils.func import fetch_paginated_data
 
 
 def forex_spot_em() -> pd.DataFrame:

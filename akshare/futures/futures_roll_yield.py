@@ -13,9 +13,9 @@ import warnings
 import math
 import pandas as pd
 
-from akshare.futures import cons
-from akshare.futures.futures_daily_bar import get_futures_daily
-from akshare.futures.symbol_var import symbol_market, symbol_varieties
+from . import cons
+from .futures_daily_bar import get_futures_daily
+from .symbol_var import symbol_market, symbol_varieties
 
 calendar = cons.get_calendar()
 

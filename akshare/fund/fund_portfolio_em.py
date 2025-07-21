@@ -12,7 +12,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def fund_portfolio_hold_em(symbol: str = "000001", date: str = "2024") -> pd.DataFrame:

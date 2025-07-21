@@ -15,13 +15,13 @@ import pandas as pd
 import requests
 import py_mini_racer
 
-from akshare.futures.cons import (
+from .cons import (
     zh_subscribe_exchange_symbol_url,
     zh_match_main_contract_url,
     zh_match_main_contract_payload,
 )
-from akshare.futures.futures_contract_detail import futures_contract_detail
-from akshare.utils import demjson
+from .futures_contract_detail import futures_contract_detail
+from ..utils import demjson
 
 
 @lru_cache()

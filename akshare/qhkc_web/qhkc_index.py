@@ -11,7 +11,7 @@ from typing import AnyStr
 import pandas as pd
 import requests
 
-from akshare.futures.cons import (
+from ..futures.cons import (
     QHKC_INDEX_URL,
     QHKC_INDEX_TREND_URL,
     QHKC_INDEX_PROFIT_LOSS_URL,

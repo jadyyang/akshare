@@ -14,16 +14,16 @@ import pandas as pd
 import py_mini_racer
 import requests
 
-from akshare.index.cons import (
+from .cons import (
     zh_sina_index_stock_payload,
     zh_sina_index_stock_url,
     zh_sina_index_stock_count_url,
     zh_sina_index_stock_hist_url,
 )
-from akshare.stock.cons import hk_js_decode
-from akshare.utils import demjson
-from akshare.utils.func import fetch_paginated_data
-from akshare.utils.tqdm import get_tqdm
+from ..stock.cons import hk_js_decode
+from ..utils import demjson
+from ..utils.func import fetch_paginated_data
+from ..utils.tqdm import get_tqdm
 
 
 def _replace_comma(x):

@@ -9,7 +9,7 @@ https://data.eastmoney.com/yjfp/
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_fhps_em(date: str = "20231231") -> pd.DataFrame:

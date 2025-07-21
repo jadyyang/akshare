@@ -9,7 +9,7 @@ https://legulegu.com/stockdata/equity-bond-spread
 import pandas as pd
 import requests
 
-from akshare.stock_feature.stock_a_indicator import get_token_lg, get_cookie_csrf
+from .stock_a_indicator import get_token_lg, get_cookie_csrf
 
 
 def stock_ebs_lg() -> pd.DataFrame:

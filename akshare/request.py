@@ -3,8 +3,8 @@ import time
 import requests
 from requests.exceptions import RequestException
 
-from akshare.exceptions import NetworkError, APIError, RateLimitError, DataParsingError
-from akshare.utils.context import config
+from .exceptions import NetworkError, APIError, RateLimitError, DataParsingError
+from .utils.context import config
 
 
 def make_request_with_retry_json(

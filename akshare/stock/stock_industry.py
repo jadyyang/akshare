@@ -12,7 +12,7 @@ import math
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
+from ..utils import demjson
 from tqdm import tqdm
 
 

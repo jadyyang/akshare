@@ -11,7 +11,7 @@ import pandas as pd
 import requests
 import time
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def bond_cb_index_jsl() -> pd.DataFrame:

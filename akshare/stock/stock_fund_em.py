@@ -14,8 +14,8 @@ from ..utils.redis_cache import lru_cache
 import pandas as pd
 import requests
 
-from akshare.utils.func import fetch_paginated_data
-from akshare.utils.tqdm import get_tqdm
+from ..utils.func import fetch_paginated_data
+from ..utils.tqdm import get_tqdm
 
 
 def stock_individual_fund_flow(

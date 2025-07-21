@@ -22,7 +22,7 @@ from typing import Tuple, Any, Optional
 import pandas as pd
 import requests
 
-from akshare.option.cons import (
+from .cons import (
     get_calendar,
     convert_date,
     DCE_DAILY_OPTION_URL,

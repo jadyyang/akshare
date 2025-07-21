@@ -11,7 +11,7 @@ import io
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def stock_industry_clf_hist_sw() -> pd.DataFrame:

@@ -10,7 +10,7 @@ import pandas as pd
 import requests
 import py_mini_racer
 
-from akshare.stock.cons import (
+from ..stock.cons import (
     zh_js_decode,
 )
 

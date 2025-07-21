@@ -12,7 +12,7 @@ from typing import Optional
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def __futures_global_hist_market_code(symbol: str = "HG00Y") -> Optional[int]:

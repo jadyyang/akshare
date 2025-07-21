@@ -14,7 +14,7 @@ import math
 import pandas as pd
 import requests
 
-from akshare.utils.func import fetch_paginated_data
+from ..utils.func import fetch_paginated_data
 
 
 def stock_zh_a_st_em() -> pd.DataFrame:

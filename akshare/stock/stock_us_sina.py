@@ -14,7 +14,7 @@ import requests
 import py_mini_racer
 from tqdm import tqdm
 
-from akshare.stock.cons import (
+from .cons import (
     js_hash_text,
     zh_js_decode,
     us_sina_stock_list_url,

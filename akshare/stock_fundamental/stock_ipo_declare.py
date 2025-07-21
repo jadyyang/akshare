@@ -9,7 +9,7 @@ https://data.eastmoney.com/xg/xg/sbqy.html
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def stock_ipo_declare() -> pd.DataFrame:

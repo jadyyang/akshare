@@ -9,7 +9,7 @@ https://xueqiu.com/snowman/S/SH601127/detail#/GSJJ
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def stock_individual_basic_info_xq(
@@ -27,7 +27,7 @@ def stock_individual_basic_info_xq(
     :return: 公司简介
     :rtype: pandas.DataFrame
     """
-    from akshare.stock.cons import xq_a_token
+    from ..stock.cons import xq_a_token
     xq_a_token = token or xq_a_token
     url = "https://stock.xueqiu.com/v5/stock/f10/cn/company.json"
     params = {
@@ -57,7 +57,7 @@ def stock_individual_basic_info_us_xq(
     :return: 公司简介
     :rtype: pandas.DataFrame
     """
-    from akshare.stock.cons import xq_a_token
+    from ..stock.cons import xq_a_token
     xq_a_token = token or xq_a_token
     url = "https://stock.xueqiu.com/v5/stock/f10/us/company.json"
     params = {
@@ -87,7 +87,7 @@ def stock_individual_basic_info_hk_xq(
     :return: 公司简介
     :rtype: pandas.DataFrame
     """
-    from akshare.stock.cons import xq_a_token
+    from ..stock.cons import xq_a_token
     xq_a_token = token or xq_a_token
     url = "https://stock.xueqiu.com/v5/stock/f10/hk/company.json"
     params = {

@@ -9,7 +9,7 @@ https://data.eastmoney.com/pmetal/comex/by.html
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def futures_comex_inventory(symbol: str = "黄金") -> pd.DataFrame:

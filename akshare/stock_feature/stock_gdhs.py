@@ -9,7 +9,7 @@ https://data.eastmoney.com/gdhs/
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_zh_a_gdhs(symbol: str = "20230930") -> pd.DataFrame:

@@ -9,7 +9,7 @@ https://quote.eastmoney.com/
 import pandas as pd
 import requests
 
-from akshare.utils.func import fetch_paginated_data
+from ..utils.func import fetch_paginated_data
 
 
 def stock_zh_a_spot_em() -> pd.DataFrame:

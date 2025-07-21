@@ -10,7 +10,7 @@ import pandas as pd
 import py_mini_racer
 import requests
 
-from akshare.stock.cons import (
+from .cons import (
     hk_js_decode,
     hk_sina_stock_hist_url,
     hk_sina_stock_hist_hfq_url,
@@ -35,7 +35,7 @@ def stock_hk_spot() -> pd.DataFrame:
         "_s_r_a": "init",
     }
     big_df = pd.DataFrame()
-    from akshare.utils.tqdm import get_tqdm
+    from ..utils.tqdm import get_tqdm
     tqdm = get_tqdm()
     for page in tqdm(range(1, 100), leave=False):
         params["page"] = str(page)

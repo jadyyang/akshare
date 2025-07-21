@@ -10,7 +10,7 @@ import pandas as pd
 import requests
 from tqdm import tqdm
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def fund_manager_em() -> pd.DataFrame:

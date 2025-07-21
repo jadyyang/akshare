@@ -13,7 +13,7 @@ from datetime import datetime, date
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def __one_year_ago(date_str: str) -> date:

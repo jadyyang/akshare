@@ -24,9 +24,9 @@ import pandas as pd
 import py_mini_racer
 import requests
 
-from akshare.utils import demjson
-from akshare.utils.cons import headers
-from akshare.utils.tqdm import get_tqdm
+from ..utils import demjson
+from ..utils.cons import headers
+from ..utils.tqdm import get_tqdm
 
 
 def fund_purchase_em() -> pd.DataFrame:
@@ -345,7 +345,7 @@ def fund_open_fund_info_em(
     :return: 指定基金指定指标的数据
     :rtype: pandas.DataFrame
     """
-    from akshare.utils.cons import headers
+    from ..utils.cons import headers
 
     url = f"https://fund.eastmoney.com/pingzhongdata/{symbol}.js"  # 各类数据都在里面
     r = requests.get(url, headers=headers)

@@ -10,7 +10,7 @@ from functools import lru_cache
 
 import pandas as pd
 import requests
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def __bond_register_service() -> requests.Session:

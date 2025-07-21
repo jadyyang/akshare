@@ -20,8 +20,8 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.option.option_em import option_current_em
-from akshare.utils.func import set_df_columns
+from .option_em import option_current_em
+from ..utils.func import set_df_columns
 
 
 # 期权-中金所-上证50指数

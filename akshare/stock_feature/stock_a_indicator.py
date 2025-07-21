@@ -14,7 +14,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def get_cookie_csrf(url: str = "") -> dict:

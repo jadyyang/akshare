@@ -13,7 +13,7 @@ import pandas as pd
 import py_mini_racer
 import requests
 
-from akshare.stock.cons import (
+from .cons import (
     zh_sina_a_stock_payload,
     zh_sina_a_stock_url,
     zh_sina_a_stock_count_url,
@@ -23,8 +23,8 @@ from akshare.stock.cons import (
     zh_sina_a_stock_qfq_url,
     zh_sina_a_stock_amount_url,
 )
-from akshare.utils import demjson
-from akshare.utils.tqdm import get_tqdm
+from ..utils import demjson
+from ..utils.tqdm import get_tqdm
 
 
 def _get_zh_a_page_count() -> int:

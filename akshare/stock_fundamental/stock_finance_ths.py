@@ -12,7 +12,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def stock_financial_abstract_ths(

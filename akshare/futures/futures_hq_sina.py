@@ -13,7 +13,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.utils import demjson
+from ..utils import demjson
 
 
 def _get_real_name_list() -> list:

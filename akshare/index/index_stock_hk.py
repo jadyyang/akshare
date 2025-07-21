@@ -16,8 +16,8 @@ import py_mini_racer
 
 from functools import lru_cache
 
-from akshare.stock.cons import hk_js_decode
-from akshare.utils.func import fetch_paginated_data
+from ..stock.cons import hk_js_decode
+from ..utils.func import fetch_paginated_data
 
 
 def _replace_comma(x) -> str:

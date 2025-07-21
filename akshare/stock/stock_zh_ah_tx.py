@@ -11,15 +11,15 @@ import random
 import pandas as pd
 import requests
 
-from akshare.stock.cons import (
+from .cons import (
     hk_url,
     hk_headers,
     hk_payload,
     hk_stock_headers,
     hk_stock_payload,
 )
-from akshare.utils import demjson
-from akshare.utils.tqdm import get_tqdm
+from ..utils import demjson
+from ..utils.tqdm import get_tqdm
 
 
 def _get_zh_stock_ah_page_count() -> int:

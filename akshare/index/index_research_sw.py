@@ -11,7 +11,7 @@ import math
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def index_hist_sw(symbol: str = "801030", period: str = "day") -> pd.DataFrame:
