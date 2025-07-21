@@ -43,10 +43,10 @@ git status
 
 ```bash
 # 给当前状态打tag（格式建议：my-version-日期）
-git tag my-release-v1.17.25.1
+git tag my-release-v1.17.25.2
 
 # 推送tag到你的仓库
-git push origin my-release-v1.17.25.1
+git push origin my-release-v1.17.25.2
 
 # 推送主分支变更
 git push origin main
@@ -66,7 +66,7 @@ git push --tags
 ```bash
 # 强制回退主分支
 git checkout main
-git reset --hard my-release-v1.17.25.1
+git reset --hard my-release-v1.17.25.2
 git push -f origin main
 ```
 
@@ -74,7 +74,7 @@ git push -f origin main
 
 ```bash
 # 基于标签创建还原分支
-git checkout -b restored-version my-release-v1.17.25.1
+git checkout -b restored-version my-release-v1.17.25.2
 
 # 推送到远程
 git push -u origin restored-version
