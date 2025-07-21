@@ -28,3 +28,19 @@ git merge release-v1.17.25 -m "Merge upstream tag v1.17.25"
 # 如果遇到冲突，查看冲突文件：
 git status
 ```
+
+## 打 Tag 并推送到远端
+
+```bash
+# 给当前状态打tag（格式建议：my-version-日期）
+git tag my-release-v1.17.25.1
+
+# 推送tag到你的仓库
+git push origin my-release-v1.17.25.1
+
+# 推送主分支变更
+git push origin main
+
+# 推送所有本地tags
+git push --tags
+```
