@@ -21,6 +21,11 @@ make version v1.17.26.1
 make version bump
 ```
 
+然后再基于 ansible-playbooks 执行同步最新代码的命令
+```bash
+ap akshare-sync
+```
+
 ## 通过 git 命令执行
 
 <!-- ## 备份当前内容

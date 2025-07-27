@@ -1,0 +1,8 @@
+---
+- name: 同步最新 akshare 代码
+  hosts: pi5s  # 指定管理节点
+  tasks:
+    - name: 同步最新 akshare 代码
+      command: git pull origin main
+      args:
+        chdir: "/home/jadyyang/code/finance/jadyyang/akshare/"  # 设置工作目录
