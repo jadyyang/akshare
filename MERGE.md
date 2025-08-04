@@ -10,9 +10,24 @@
 
 ## 在 vscode 中可视化操作
 
+分为几步：
+1. 从 akshare 获取最新代码
+2. merge
+3. 发布到服务器
+
+### 1 从 akshare 获取最新代码
+
+在 git 面板右上角选择 **Fetch**，然后选择官方 akshare 源
+
+### 2 merge
+
 直接在 git 面板右上角选择 **Branch** >> **Merge...**，然后选择最新的分支即可。
 
-合并完成后，commit 并 push。然后执行下面的命令，设置版本
+合并完成后，commit 并 push。
+
+### 3 发布到服务器
+
+然后执行下面的命令，设置版本
 ```bash
 # 前面的 v1.17.26 是对应 akshare 的版本，第4段的数字才是自己的版本
 make version v1.17.26.1
