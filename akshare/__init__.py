@@ -3133,9 +3133,11 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.17.24 fix: fix futures_inventory_99 interface
 1.17.25 fix: fix get_receipt interface
 1.17.26 fix: fix stock_hot_rank_detail_em interface
+1.17.27 fix: fix index_csindex_all interface
+1.17.28 fix: fix stock_financial_analysis_indicator_em interface
 """
 
-__version__ = "1.17.26"
+__version__ = "1.17.28"
 __author__ = "AKFamily"
 
 import sys
@@ -3156,6 +3158,11 @@ if sys.version_info < (3, 9):
     )
 
 del sys
+
+"""
+东方财富-A股-财务分析-主要指标
+"""
+from akshare.stock_fundamental.stock_finance_sina import stock_financial_analysis_indicator_em
 
 """
 期权保证金 
@@ -5137,6 +5144,12 @@ from .economic.macro_bank import (
 from .index.index_yw import index_yw
 
 """
+
+股票指数-股票指数-中证指数列表
+"""
+from akshare.index.index_csindex import index_csindex_all
+"""
+
 股票指数-股票指数-成份股
 """
 from .index.index_cons import (
