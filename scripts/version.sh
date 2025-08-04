@@ -220,10 +220,14 @@ main() {
     # 创建并推送标签
     create_and_push_tag "$new_version"
     
-    # 将 release 分支的更新合并回 main 分支
-    echo -e "${YELLOW}🔄 同步更新到${MAIN_BRANCH}分支...${NC}"
+    # 切换回main分支并合并release
+    echo -e "${YELLOW}🔄 切换回${MAIN_BRANCH}分支...${NC}"
     git checkout "$MAIN_BRANCH"
-    git merge "$RELEASE_BRANCH" --no-ff -m "Sync release $new_version back to main"
+    
+    echo -e "${YELLOW}🔄 合并${RELEASE_BRANCH}分支到${MAIN_BRANCH}...${NC}"
+    git merge "$RELEASE_BRANCH" --no-ff -m "Merge release $new_version back to $MAIN_BRANCH"
+    
+    echo -e "${YELLOW}📤 推送${MAIN_BRANCH}分支到远程仓库...${NC}"
     git push origin "$MAIN_BRANCH"
     
     echo ""
@@ -233,6 +237,9 @@ main() {
     echo -e "${GREEN}✅ 分支: ${RELEASE_BRANCH}${NC}"
     echo -e "${GREEN}✅ 标签已推送到远程仓库${NC}"
     echo ""
+    echo -e "${BLUE}📋 后续操作:${NC}"
+    echo "  1. 构建镜像: make build"
+    echo "  2. 部署服务: make start"
 }
 
 # 执行主函数
