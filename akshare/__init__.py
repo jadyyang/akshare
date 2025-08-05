@@ -3162,7 +3162,7 @@ del sys
 """
 东方财富-A股-财务分析-主要指标
 """
-from akshare.stock_fundamental.stock_finance_sina import stock_financial_analysis_indicator_em
+from .stock_fundamental.stock_finance_sina import stock_financial_analysis_indicator_em
 
 """
 期权保证金 
@@ -5147,7 +5147,7 @@ from .index.index_yw import index_yw
 
 股票指数-股票指数-中证指数列表
 """
-from akshare.index.index_csindex import index_csindex_all
+from .index.index_csindex import index_csindex_all
 """
 
 股票指数-股票指数-成份股
