@@ -15,8 +15,13 @@ import requests
 from bs4 import BeautifulSoup
 
 from ..utils.cons import headers
+from ..utils.redis_cache import lru_cache
 
 
+@lru_cache(
+    max_age=30 * 60,  # 缓存30分钟
+    func_key='lg:csrf',
+)
 def get_cookie_csrf(url: str = "") -> dict:
     """
     乐咕乐股-主板市盈率
