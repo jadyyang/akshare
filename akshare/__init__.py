@@ -3765,7 +3765,7 @@ from .option.option_risk_indicator_sse import option_risk_indicator_sse
 """
 期权-上海证券交易所-当日合约
 """
-from akshare.option.option_risk_indicator_sse import option_risk_indicator_sse
+from .option.option_risk_indicator_sse import option_risk_indicator_sse
 """
 
 全球宏观事件
