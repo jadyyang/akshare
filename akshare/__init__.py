@@ -3179,7 +3179,7 @@ del sys
 """
 上海证券交易所-产品-股票期权-信息披露-当日合约
 """
-from akshare.option.option_current_sse import option_current_day_sse
+from .option.option_current_sse import option_current_day_sse
 
 """
 东方财富-A股-财务分析-主要指标
