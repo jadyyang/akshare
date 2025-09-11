@@ -3207,7 +3207,7 @@ from .stock.stock_profile_em import stock_hk_company_profile_em, stock_hk_securi
 """
 东方财富-港股-核心必读
 """
-from akshare.stock.stock_profile_em import stock_hk_dividend_payout_em, stock_hk_financial_indicator_em
+from .stock.stock_profile_em import stock_hk_dividend_payout_em, stock_hk_financial_indicator_em
 
 """
 东方财富网-行情中心-债券市场-质押式回购
