@@ -3194,7 +3194,7 @@ from .option.option_current_sse import option_current_day_sse
 """
 深圳证券交易所-期权子网-行情数据-当日合约
 """
-from akshare.option.option_current_szse import option_current_day_szse
+from .option.option_current_szse import option_current_day_szse
 
 """
 东方财富-A股-财务分析-主要指标
