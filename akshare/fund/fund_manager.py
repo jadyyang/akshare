@@ -9,8 +9,8 @@ https://fund.eastmoney.com/manager/default.html
 import pandas as pd
 import requests
 
-from akshare.utils import demjson
-from akshare.utils.tqdm import get_tqdm
+from ..utils import demjson
+from ..utils.tqdm import get_tqdm
 
 
 def fund_manager_em() -> pd.DataFrame:
