@@ -3287,7 +3287,7 @@ from .stock.stock_hold_control_cninfo import stock_hold_change_cninfo
 """
 天天基金-基金档案-基金基本概况
 """
-from akshare.fund.fund_overview_em import fund_overview_em
+from .fund.fund_overview_em import fund_overview_em
 
 """
 基金费率
