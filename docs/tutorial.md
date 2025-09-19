@@ -814,6 +814,7 @@
  # REITs
  "reits_realtime_em"  #  REITs-实时行情
  "reits_hist_em"  #  REITs-历史行情
+ "reits_hist_min_em"  #  REITs-历史分钟行情
  # A 股分时数据
  "stock_zh_a_hist_min_em"  # 东财-股票分时
  "stock_zh_a_hist_pre_min_em"  # 东财-股票盘前分时
@@ -1304,6 +1305,8 @@
  "volatility_yz_rv"  # 已实现波动率计算
  # 东方财富网-数据中心-估值分析-每日互动-每日互动-估值分析
  "stock_value_em"  # 东方财富网-数据中心-估值分析-每日互动-每日互动-估值分析
+ # 基金基本概况
+ "fund_overview_em"  # 基金基本概况
  # 基金费率
  "fund_fee_em"  # 基金费率
  # 期货行情-东方财富
