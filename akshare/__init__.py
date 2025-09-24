@@ -3224,12 +3224,12 @@ from .stock.stock_profile_em import stock_hk_dividend_payout_em, stock_hk_financ
 """
 东方财富-港股-行业对比
 """
-from akshare.stock.stock_hk_comparison_em import stock_hk_growth_comparison_em, stock_hk_valuation_comparison_em, stock_hk_scale_comparison_em
+from .stock.stock_hk_comparison_em import stock_hk_growth_comparison_em, stock_hk_valuation_comparison_em, stock_hk_scale_comparison_em
 
 """
 东方财富-行情中心-同行比较
 """
-from akshare.stock.stock_zh_comparison_em import stock_zh_growth_comparison_em, stock_zh_valuation_comparison_em, stock_zh_dupont_comparison_em, stock_zh_scale_comparison_em
+from .stock.stock_zh_comparison_em import stock_zh_growth_comparison_em, stock_zh_valuation_comparison_em, stock_zh_dupont_comparison_em, stock_zh_scale_comparison_em
 
 """
 东方财富网-行情中心-债券市场-质押式回购
