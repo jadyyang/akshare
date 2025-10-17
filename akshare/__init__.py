@@ -3174,9 +3174,10 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.17.65 fix: fix futures_dce_warehouse_receipt interface
 1.17.66 fix: fix futures_delivery_czce interface
 1.17.67 fix: fix stock_zh_a_hist_tx interface
+1.17.68 fix: fix option_hist_dce interface
 """
 
-__version__ = "1.17.67"
+__version__ = "1.17.68"
 __author__ = "AKFamily"
 
 import sys
@@ -5173,7 +5174,7 @@ from .fx.currency_investing import (
 """
 商品期权-郑州商品交易所-期权-历史数据
 """
-from .option.option_czce import option_czce_hist
+from .option.option_czce import option_hist_yearly_czce
 
 """
 宏观-经济数据-银行间拆借利率
@@ -5647,11 +5648,12 @@ from .bond.bond_china import (
 商品期权
 """
 from .option.option_commodity import (
-    option_dce_daily,
-    option_czce_daily,
-    option_shfe_daily,
-    option_gfex_vol_daily,
-    option_gfex_daily,
+    option_hist_dce,
+    option_hist_czce,
+    option_hist_shfe,
+    option_vol_gfex,
+    option_hist_gfex,
+    option_vol_shfe,
 )
 
 """
