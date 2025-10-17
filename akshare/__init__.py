@@ -5174,7 +5174,7 @@ from .fx.currency_investing import (
 """
 商品期权-郑州商品交易所-期权-历史数据
 """
-from akshare.option.option_czce import option_hist_yearly_czce
+from .option.option_czce import option_hist_yearly_czce
 
 """
 宏观-经济数据-银行间拆借利率
@@ -5647,7 +5647,7 @@ from .bond.bond_china import (
 """
 商品期权
 """
-from akshare.option.option_commodity import (
+from .option.option_commodity import (
     option_hist_dce,
     option_hist_czce,
     option_hist_shfe,
