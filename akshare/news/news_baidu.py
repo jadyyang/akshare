@@ -8,7 +8,6 @@ https://gushitong.baidu.com/calendar
 
 import pandas as pd
 import requests
-import numpy as np
 
 
 def news_economic_baidu(date: str = "20241107") -> pd.DataFrame:
@@ -252,18 +251,18 @@ def news_report_time_baidu(date: str = "20241107") -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    news_economic_baidu_df = news_economic_baidu(date="20250307")
+    news_economic_baidu_df = news_economic_baidu(date="20251117")
     print(news_economic_baidu_df)
 
     news_trade_notify_suspend_baidu_df = news_trade_notify_suspend_baidu(
-        date="20241107"
+        date="20251117"
     )
     print(news_trade_notify_suspend_baidu_df)
 
     news_trade_notify_dividend_baidu_df = news_trade_notify_dividend_baidu(
-        date="20251114"
+        date="20251117"
     )
     print(news_trade_notify_dividend_baidu_df)
 
-    news_report_time_baidu_df = news_report_time_baidu(date="20241107")
+    news_report_time_baidu_df = news_report_time_baidu(date="20251117")
     print(news_report_time_baidu_df)
