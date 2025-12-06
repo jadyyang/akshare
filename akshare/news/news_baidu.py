@@ -1,14 +1,76 @@
 # -*- coding:utf-8 -*-
 # !/usr/bin/env python
 """
-Date: 2025/11/14 20:30
+Date: 2025/12/1 22:00
 Desc: 百度股市通-经济数据
 https://gushitong.baidu.com/calendar
 """
 import math
+import re
 
 import pandas as pd
 import requests
+
+
+def _get_baidu_cookie(headers: dict) -> str:
+    """
+    安全获取百度股市通所需的Cookie
+    :param headers: 基础请求头
+    :return: 格式化的Cookie字符串
+    :raises ValueError: 当无法获取必要Cookie时
+    :raises ConnectionError: 网络请求失败时
+    """
+    try:
+        # 使用Session保持Cookie上下文
+        with requests.Session() as session:
+            session.headers.update(headers)
+
+            # 第一步：获取基础Cookie (BAIDUID系列)
+            resp1 = session.get(
+                "https://gushitong.baidu.com/calendar",
+                timeout=10
+            )
+            resp1.raise_for_status()
+
+            # 验证必要Cookie
+            baiduid = resp1.cookies.get("BAIDUID")
+            baiduid_bfess = resp1.cookies.get("BAIDUID_BFESS")
+            if not all([baiduid, baiduid_bfess]):
+                raise ValueError("Missing BAIDUID cookies in first response")
+
+            # 第二步：提取并请求hm.js
+            hm_pattern = r'https://hm\.baidu\.com/hm\.js\?\w+'
+            hm_match = re.search(hm_pattern, resp1.text)
+            if not hm_match:
+                # 尝试备用正则模式
+                hm_match = re.search(r'//hm\.baidu\.com/hm\.js\?\w+', resp1.text)
+                if not hm_match:
+                    raise ValueError("Failed to extract hm.js URL from response")
+
+            hm_url = "https:" + hm_match.group() if hm_match.group().startswith("//") else hm_match.group()
+
+            # 第二步请求 (自动携带第一步的Cookie)
+            resp2 = session.get(hm_url, timeout=10)
+            resp2.raise_for_status()
+
+            # 验证必要Cookie
+            hmac_count = resp2.cookies.get("HMACCOUNT")
+            hmac_count_bfess = resp2.cookies.get("HMACCOUNT_BFESS")
+            if not all([hmac_count, hmac_count_bfess]):
+                raise ValueError("Missing HMACCOUNT cookies in second response")
+
+            # 安全拼接Cookie
+            return (
+                f"BAIDUID={baiduid}; "
+                f"BAIDUID_BFESS={baiduid_bfess}; "
+                f"HMACCOUNT={hmac_count}; "
+                f"HMACCOUNT_BFESS={hmac_count_bfess}"
+            )
+
+    except requests.exceptions.RequestException as e:
+        raise ConnectionError(f"Network request failed: {str(e)}") from e
+    except re.error as e:
+        raise ValueError(f"Regex pattern error: {str(e)}") from e
 
 
 def _baidu_finance_calendar(
@@ -52,26 +114,13 @@ def _baidu_finance_calendar(
                       "Chrome/142.0.0.0 Safari/537.36"
     }
 
-    # 默认cookie
+    # 在_baidu_finance_calendar函数中替换原代码块
     if cookie is None:
-        cookie = ("BAIDUID=2FFEC7A2DFDD58623592821064EA5BA7:FG=1; BAIDUID_BFESS=2FFEC7A2DFDD58623592821064EA5BA7"
-                  ":FG=1; ppfuid=FOCoIC3q5fKa8fgJnwzbE67EJ49BGJeplOzf+4l4EOvDuu2RXBRv6R3A1AZMa49I27C0gDDLrJyxcIIe"
-                  "AeEhD8JYsoLTpBiaCXhLqvzbzmvy3SeAW17tKgNq/Xx+RgOdb8TWCFe62MVrDTY6lMf2GrfqL8c87KLF2qFER3obJGnsqk"
-                  "Zri/4OJbm7r4CyJIowGEimjy3MrXEpSuItnI4KD2oamHIjD/NFFeJepWnxVEaTDvh37imFnz2JusPfLg+20CMlRn+O+PSm"
-                  "Ijl1iaxOt9JGgA1IWuwdWQ6HGpfvkACrc6cZOQiWpdWZFfM9cCLuTBuECl+tiP++NCHKpXEMdWH1SPBXDyoMbf9Ga3EX3J"
-                  "C70/lU+rOcT92RpNAO3HyuQbeCqJ91LNPfk1CUv8oZVl7/rim5dFAQ7oqBps3g3+aZ9KUZywDhnDu1Pi1I0y9keBGRJ+oo"
-                  "8Kes3TzdoZP/mCoPKvyITQOchTYjURqFqbrHZFO3SaB4GS7zlBrG2cLm8lTRl19JYcYcqvy3P/50mxpWDwUUC4pvKOF9e+p"
-                  "wNq7l6HzKEZyCMUDd+W6AiaksYiu+4AAz72OnMQfgAyNUbW3IyzL5c+UBht87WUigOY9alcIuR+n1gwn+Dmf3unATYGtv0z"
-                  "KmAog3Ny9wFYiQ/gdKSrR9D25HSwrLQyIe5QKTkKSlY6nVev8MhaT3AUPwNqYIvWCQZXWkhuuU0ZXLMYAKJSeHY7mTrwwSS"
-                  "KC3ZaI47CoFrvl4EuqobWGxpsF3vJDYM3XW3DNljsFR9IuqbVM9CtZEazJl9vJpqbMvL7R91rSPWb2eeCt263/A+EJVR/A8"
-                  "+3BQ92SIDoXabq8Wb8ZGN9BAsC9g5OdjE6lhwzTadptHqT7mZN901gDzA4lMYEG/kekC+0J5/N5yVy+eizEguGAhOCNLy27"
-                  "Y07ekeZ4evBBG6uKiyECyim8GsWrtEdf1YjB/qEZ70NLAIoAhusD05kuRm4sFZh/o1XJ6o5ZazU62XvOvycqQeNHJHilKXv"
-                  "+Y0q7CT6wHNqzprY+XMxDln8dKB7nefcEun8dlqoZs4uNOo+pkpyckwWP4VbWloC92vUUtZ2lVqKiGsvJKvLgaUA9sPnxLH"
-                  "pdf4XomqPKDKx4eFPQw2Q1jzqxFibbX6o8w3MlwZxJhxBabUW5sicyie973hz6nxWLbBzvYx9HPb4mEvyTKCvOi6/oFz+ZBS"
-                  "s/kEn2kikYfHcMOTvlvvsfnWwwTasVNneN3K++VbMkJcXe6HpWGsfMtkPHUjgkj; ab_sr=1.0.1_MThjZTllNjUzYjk4Mz"
-                  "Q4ZDcxZTc3ZDIxY2ZiZDYyODdkOTZmMDUxYzU1MWE4NTY2N2I5NjExZjk1ZjRiMTU4M2Q4N2MyMDYxZGRiMDFjOTg5NDJjO"
-                  "DM5Zjk2Y2JhMDI1NzU5YjFmYWZlYjgyYjEyNzYxMTQ0YTVjYjVhNDc0ZTQwMWUzZDI2YjQ3OGVkYjI0Mzk5ZmQyNWYwZjBh"
-                  "M2U3YmQzNTI5YWUyNGRlZDNhOTIxNjMyODljN2I1YzYyYzA0OTE4NjI0NWVkYzVhZWFkMDc2YWEwZjQxZDRiZDY0MmE=")
+        try:
+            cookie = _get_baidu_cookie(headers.copy())  # 保护原始headers
+        except Exception as e:
+            # 可降级处理或保留原始行为
+            raise RuntimeError(f"Failed to obtain Baidu cookies: {str(e)}") from e
     headers["cookie"] = cookie
 
     url = "https://finance.pae.baidu.com/sapi/v1/financecalendar"
