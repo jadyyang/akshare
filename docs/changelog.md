@@ -89,6 +89,46 @@
 
 ## 更新说明详情
 
+1.17.98 fix: fix stock_jgdy_tj_em interface
+
+	1. 修复 stock_jgdy_tj_em 接口
+	2. 修复 fund_fee_em 接口
+
+1.17.97 fix: fix stock_financial_debt_new_ths interface
+
+	1. 修复 stock_financial_abstract_new_ths 接口
+	2. 修复 stock_financial_debt_new_ths 接口
+	3. 修复 stock_financial_benefit_new_ths 接口
+	4. 修复 stock_financial_cash_new_ths 接口
+
+1.17.96 fix: fix stock_info_sh_name_code interface
+
+	1. 修复 stock_info_sh_name_code 接口
+	2. 修复 stock_financial_cash_ths 接口
+	3. 修复 stock_financial_benefit_ths 接口
+	4. 修复 stock_financial_debt_ths 接口
+	5. 修复 stock_financial_abstract_ths 接口
+
+1.17.95 fix: fix stock_info_sh_name_code interface
+
+	1. 修复 stock_info_sh_name_code 接口
+	2. 修复 news_trade_notify_suspend_baidu 接口
+	3. 修复 macro_china_shrzgm 接口
+	4. 修复 fund_fee_em 接口
+
+1.17.94 fix: fix index_detail_cni interface
+
+	1. 修复 index_detail_cni 接口
+	2. 修复 stock_individual_spot_xq 接口
+
+1.17.93 fix: fix stock_news_em interface
+
+	1. 修复 stock_news_em 接口
+
+1.17.92 fix: fix currency_boc_sina interface
+
+	1. 修复 currency_boc_sina 接口
+
 1.17.91 fix: fix news_economic_baidu interface
 
 	1. 修复 news_economic_baidu 接口
@@ -5976,6 +6016,20 @@
     3. 修改 air_quality_hist 接口的请求日期格式，从 '2022-01-01' 为 '20220101'
 
 ## 版本更新说明
+
+1.17.98 fix: fix stock_jgdy_tj_em interface
+
+1.17.97 fix: fix stock_financial_debt_new_ths interface
+
+1.17.96 fix: fix stock_info_sh_name_code interface
+
+1.17.95 fix: fix stock_info_sh_name_code interface
+
+1.17.94 fix: fix index_detail_cni interface
+
+1.17.93 fix: fix stock_news_em interface
+
+1.17.92 fix: fix currency_boc_sina interface
 
 1.17.91 fix: fix news_economic_baidu interface
 
