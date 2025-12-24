@@ -4558,7 +4558,7 @@ from .stock_fundamental.stock_notice import stock_notice_report
 """
 首发企业申报
 """
-from akshare.stock_fundamental.stock_ipo_declare import stock_ipo_declare_em
+from .stock_fundamental.stock_ipo_declare import stock_ipo_declare_em
 
 """
 三大报表
