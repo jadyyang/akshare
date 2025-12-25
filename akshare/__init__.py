@@ -4815,7 +4815,7 @@ from .stock_fundamental.stock_register_em import (
 """
 东方财富-过会企业信息
 """
-from akshare.stock_fundamental.stock_ipo_review import stock_ipo_review_em
+from .stock_fundamental.stock_ipo_review import stock_ipo_review_em
 
 """
 新浪财经-龙虎榜

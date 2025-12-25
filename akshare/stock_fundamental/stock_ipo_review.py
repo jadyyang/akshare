@@ -11,8 +11,8 @@ import json
 import pandas as pd
 import requests
 
-from akshare.utils.cons import headers
-from akshare.utils.tqdm import get_tqdm
+from ..utils.cons import headers
+from ..utils.tqdm import get_tqdm
 
 
 def stock_ipo_review_em() -> pd.DataFrame:
