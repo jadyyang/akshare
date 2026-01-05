@@ -3822,7 +3822,7 @@ from .stock_feature.stock_hk_valuation_baidu import stock_hk_valuation_baidu
 """
 百度股市通-美股-财务报表-估值数据
 """
-from akshare.stock_feature.stock_us_valuation_baidu import stock_us_valuation_baidu
+from .stock_feature.stock_us_valuation_baidu import stock_us_valuation_baidu
 
 
 """
