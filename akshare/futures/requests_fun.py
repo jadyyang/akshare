@@ -11,7 +11,7 @@ from typing import Dict
 
 import pandas as pd
 import requests
-from akshare.utils.cons import headers
+from ..utils.cons import headers
 
 
 def requests_link(
