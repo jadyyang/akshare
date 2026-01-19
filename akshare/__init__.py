@@ -3706,12 +3706,12 @@ from .fund.fund_etf_em import (
 """
 上海证券交易所-ETF基金份额数据
 """
-from akshare.fund.fund_etf_sse import fund_etf_scale_sse
+from .fund.fund_etf_sse import fund_etf_scale_sse
 
 """
 深圳证券交易所-ETF基金份额数据
 """
-from akshare.fund.fund_etf_szse import fund_etf_scale_szse
+from .fund.fund_etf_szse import fund_etf_scale_szse
 
 """
 乐咕乐股-股债利差
