@@ -46,7 +46,6 @@ def stock_hk_spot() -> pd.DataFrame:
         temp_df = pd.DataFrame(data_json)
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
 
-
     big_df.columns = [
         "代码",
         "中文名称",
@@ -73,24 +72,26 @@ def stock_hk_spot() -> pd.DataFrame:
         "-",
         "-",
     ]
-    big_df = big_df[[
-        "日期时间",
-        "代码",
-        "中文名称",
-        "英文名称",
-        "交易类型",
-        "最新价",
-        "涨跌额",
-        "涨跌幅",
-        "昨收",
-        "今开",
-        "最高",
-        "最低",
-        "成交量",
-        "成交额",
-        "买一",
-        "卖一",
-    ]]
+    big_df = big_df[
+        [
+            "日期时间",
+            "代码",
+            "中文名称",
+            "英文名称",
+            "交易类型",
+            "最新价",
+            "涨跌额",
+            "涨跌幅",
+            "昨收",
+            "今开",
+            "最高",
+            "最低",
+            "成交量",
+            "成交额",
+            "买一",
+            "卖一",
+        ]
+    ]
     big_df["最新价"] = pd.to_numeric(big_df["最新价"], errors="coerce")
     big_df["涨跌额"] = pd.to_numeric(big_df["涨跌额"], errors="coerce")
     big_df["涨跌幅"] = pd.to_numeric(big_df["涨跌幅"], errors="coerce")
