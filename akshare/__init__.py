@@ -3227,7 +3227,7 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.18.19 fix: fix github action
 """
 
-from akshare._version import __version__
+from ._version import __version__
 __author__ = "AKFamily"
 
 """
