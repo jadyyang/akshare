@@ -11,7 +11,7 @@ from typing import List, Dict
 
 import pandas as pd
 
-from ..utils.request import get_session, request_with_retry
+from ..utils.request import get_session, get_tls_session, request_with_retry, request_with_retry_tls
 from ..utils.tqdm import get_tqdm
 
 
@@ -21,6 +21,8 @@ def fetch_paginated_data(
     timeout: int = 15,
     headers: Dict = None,
     session=None,
+    use_tls_impersonation: bool = False,
+    impersonate: str = "chrome120",
 ):
     """
     东方财富-分页获取数据并合并结果
@@ -38,13 +40,26 @@ def fetch_paginated_data(
     params = base_params.copy()
     own_session = session is None
     if own_session:
-        session = get_session()
+        if use_tls_impersonation:
+            session = get_tls_session(headers=headers, impersonate=impersonate)
+        if session is None:
+            session = get_session()
 
     try:
         # 获取第一页数据，用于确定分页信息
-        r = request_with_retry(
-            url, params=params, timeout=timeout, session=session, headers=headers
+        request_func = (
+            request_with_retry_tls if use_tls_impersonation else request_with_retry
         )
+        request_kwargs = {
+            "url": url,
+            "params": params,
+            "timeout": timeout,
+            "session": session,
+            "headers": headers,
+        }
+        if use_tls_impersonation:
+            request_kwargs["impersonate"] = impersonate
+        r = request_func(**request_kwargs)
         data_json = r.json()
         # 计算分页信息
         per_page_num = len(data_json["data"]["diff"])
@@ -60,9 +75,16 @@ def fetch_paginated_data(
             params.update({"pn": page})
             # 添加随机延迟，避免请求过于频繁
             time.sleep(random.uniform(0.5, 1.5))
-            r = request_with_retry(
-                url, params=params, timeout=timeout, session=session, headers=headers
-            )
+            request_kwargs = {
+                "url": url,
+                "params": params,
+                "timeout": timeout,
+                "session": session,
+                "headers": headers,
+            }
+            if use_tls_impersonation:
+                request_kwargs["impersonate"] = impersonate
+            r = request_func(**request_kwargs)
             data_json = r.json()
             inner_temp_df = pd.DataFrame(data_json["data"]["diff"])
             temp_list.append(inner_temp_df)

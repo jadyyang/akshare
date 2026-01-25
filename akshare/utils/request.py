@@ -11,6 +11,14 @@ from typing import Dict, Optional, Tuple
 import requests
 from requests.adapters import HTTPAdapter
 
+try:
+    from curl_cffi import requests as curl_requests
+
+    _HAS_CURL_CFFI = True
+except Exception:
+    curl_requests = None
+    _HAS_CURL_CFFI = False
+
 
 DEFAULT_HEADERS: Dict[str, str] = {
     "User-Agent": (
@@ -36,6 +44,28 @@ def get_session(headers: Optional[Dict[str, str]] = None) -> requests.Session:
     adapter = HTTPAdapter(pool_connections=10, pool_maxsize=10)
     session.mount("http://", adapter)
     session.mount("https://", adapter)
+    session.headers.update(DEFAULT_HEADERS)
+    if headers:
+        session.headers.update(headers)
+    return session
+
+
+def get_tls_session(
+    headers: Optional[Dict[str, str]] = None,
+    impersonate: str = "chrome120",
+):
+    """
+    创建带 TLS 指纹模拟的 Session（基于 curl_cffi）
+    :param headers: 额外请求头
+    :type headers: dict
+    :param impersonate: 浏览器指纹名称
+    :type impersonate: str
+    :return: Session 或 None（未安装 curl_cffi）
+    :rtype: requests.Session | None
+    """
+    if not _HAS_CURL_CFFI:
+        return None
+    session = curl_requests.Session(impersonate=impersonate)
     session.headers.update(DEFAULT_HEADERS)
     if headers:
         session.headers.update(headers)
@@ -96,6 +126,77 @@ def request_with_retry(
                 if attempt < max_retries - 1:
                     # 指数退避 + 随机抖动
                     delay = base_delay * (2**attempt) + random.uniform(*random_delay_range)
+                    time.sleep(delay)
+    finally:
+        if own_session and session is not None:
+            session.close()
+
+    raise last_exception
+
+
+def request_with_retry_tls(
+    url: str,
+    params: Dict = None,
+    timeout: int = 15,
+    max_retries: int = 3,
+    base_delay: float = 1.0,
+    random_delay_range: Tuple[float, float] = (0.5, 1.5),
+    session: Optional[requests.Session] = None,
+    headers: Optional[Dict[str, str]] = None,
+    cookies: Optional[Dict[str, str]] = None,
+    impersonate: str = "chrome120",
+) -> requests.Response:
+    """
+    带 TLS 指纹模拟的重试请求（基于 curl_cffi）；不可用时回退到 requests
+    """
+    if not _HAS_CURL_CFFI:
+        return request_with_retry(
+            url,
+            params=params,
+            timeout=timeout,
+            max_retries=max_retries,
+            base_delay=base_delay,
+            random_delay_range=random_delay_range,
+            session=session,
+            headers=headers,
+            cookies=cookies,
+        )
+
+    own_session = session is None
+    if own_session:
+        session = get_tls_session(headers=headers, impersonate=impersonate)
+        if session is None:
+            return request_with_retry(
+                url,
+                params=params,
+                timeout=timeout,
+                max_retries=max_retries,
+                base_delay=base_delay,
+                random_delay_range=random_delay_range,
+                session=None,
+                headers=headers,
+                cookies=cookies,
+            )
+
+    last_exception = None
+    try:
+        for attempt in range(max_retries):
+            try:
+                response = session.get(
+                    url,
+                    params=params,
+                    timeout=timeout,
+                    headers=headers,
+                    cookies=cookies,
+                )
+                response.raise_for_status()
+                return response
+            except (requests.RequestException, ValueError) as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    delay = base_delay * (2**attempt) + random.uniform(
+                        *random_delay_range
+                    )
                     time.sleep(delay)
     finally:
         if own_session and session is not None:
