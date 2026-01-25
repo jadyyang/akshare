@@ -11,11 +11,17 @@ from typing import List, Dict
 
 import pandas as pd
 
-from ..utils.request import request_with_retry
+from ..utils.request import get_session, request_with_retry
 from ..utils.tqdm import get_tqdm
 
 
-def fetch_paginated_data(url: str, base_params: Dict, timeout: int = 15):
+def fetch_paginated_data(
+    url: str,
+    base_params: Dict,
+    timeout: int = 15,
+    headers: Dict = None,
+    session=None,
+):
     """
     东方财富-分页获取数据并合并结果
     https://quote.eastmoney.com/f1.html?newcode=0.000001
@@ -30,27 +36,39 @@ def fetch_paginated_data(url: str, base_params: Dict, timeout: int = 15):
     """
     # 复制参数以避免修改原始参数
     params = base_params.copy()
-    # 获取第一页数据，用于确定分页信息
-    r = request_with_retry(url, params=params, timeout=timeout)
-    data_json = r.json()
-    # 计算分页信息
-    per_page_num = len(data_json["data"]["diff"])
-    total_page = math.ceil(data_json["data"]["total"] / per_page_num)
-    # 存储所有页面数据
-    temp_list = []
-    # 添加第一页数据
-    temp_list.append(pd.DataFrame(data_json["data"]["diff"]))
-    # 获取进度条
-    tqdm = get_tqdm()
-    # 获取剩余页面数据
-    for page in tqdm(range(2, total_page + 1), leave=False):
-        params.update({"pn": page})
-        # 添加随机延迟，避免请求过于频繁
-        time.sleep(random.uniform(0.5, 1.5))
-        r = request_with_retry(url, params=params, timeout=timeout)
+    own_session = session is None
+    if own_session:
+        session = get_session()
+
+    try:
+        # 获取第一页数据，用于确定分页信息
+        r = request_with_retry(
+            url, params=params, timeout=timeout, session=session, headers=headers
+        )
         data_json = r.json()
-        inner_temp_df = pd.DataFrame(data_json["data"]["diff"])
-        temp_list.append(inner_temp_df)
+        # 计算分页信息
+        per_page_num = len(data_json["data"]["diff"])
+        total_page = math.ceil(data_json["data"]["total"] / per_page_num)
+        # 存储所有页面数据
+        temp_list = []
+        # 添加第一页数据
+        temp_list.append(pd.DataFrame(data_json["data"]["diff"]))
+        # 获取进度条
+        tqdm = get_tqdm()
+        # 获取剩余页面数据
+        for page in tqdm(range(2, total_page + 1), leave=False):
+            params.update({"pn": page})
+            # 添加随机延迟，避免请求过于频繁
+            time.sleep(random.uniform(0.5, 1.5))
+            r = request_with_retry(
+                url, params=params, timeout=timeout, session=session, headers=headers
+            )
+            data_json = r.json()
+            inner_temp_df = pd.DataFrame(data_json["data"]["diff"])
+            temp_list.append(inner_temp_df)
+    finally:
+        if own_session and session is not None:
+            session.close()
     # 合并所有数据
     temp_df = pd.concat(temp_list, ignore_index=True)
     temp_df["f3"] = pd.to_numeric(temp_df["f3"], errors="coerce")

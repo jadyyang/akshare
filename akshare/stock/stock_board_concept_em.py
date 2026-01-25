@@ -7,13 +7,27 @@ https://quote.eastmoney.com/center/boardlist.html#concept_board
 """
 
 import re
-# from functools import lru_cache
+from functools import lru_cache as functools_lru_cache
+
 from ..utils.redis_cache import lru_cache
 
 import pandas as pd
-import requests
 
 from ..utils.func import fetch_paginated_data
+from ..utils.request import get_session, request_with_retry
+
+
+def _em_headers(referer: str) -> dict:
+    return {
+        "Accept": "application/json, text/plain, */*",
+        "Origin": "https://quote.eastmoney.com",
+        "Referer": referer,
+    }
+
+
+@functools_lru_cache()
+def _em_session():
+    return get_session()
 
 
 @lru_cache(
@@ -39,7 +53,14 @@ def __stock_board_concept_name_em() -> pd.DataFrame:
         "fs": "m:90 t:3 f:!50",
         "fields": "f2,f3,f4,f8,f12,f14,f15,f16,f17,f18,f20,f21,f24,f25,f22,f33,f11,f62,f128,f124,f107,f104,f105,f136",
     }
-    temp_df = fetch_paginated_data(url, params)
+    temp_df = fetch_paginated_data(
+        url,
+        params,
+        headers=_em_headers(
+            "https://quote.eastmoney.com/center/boardlist.html#concept_board"
+        ),
+        session=_em_session(),
+    )
     temp_df.columns = [
         "排名",
         "最新价",
@@ -118,7 +139,14 @@ def stock_board_concept_name_em() -> pd.DataFrame:
         "fs": "m:90 t:3 f:!50",
         "fields": "f2,f3,f4,f8,f12,f14,f15,f16,f17,f18,f20,f21,f24,f25,f22,f33,f11,f62,f128,f124,f107,f104,f105,f136",
     }
-    temp_df = fetch_paginated_data(url, params)
+    temp_df = fetch_paginated_data(
+        url,
+        params,
+        headers=_em_headers(
+            "https://quote.eastmoney.com/center/boardlist.html#concept_board"
+        ),
+        session=_em_session(),
+    )
     temp_df.columns = [
         "排名",
         "最新价",
@@ -212,7 +240,12 @@ def stock_board_concept_spot_em(symbol: str = "可燃冰") -> pd.DataFrame:
         fltt="1",
         secid=f"90.{em_code}",
     )
-    r = requests.get(url, params=params)
+    r = request_with_retry(
+        url,
+        params=params,
+        session=_em_session(),
+        headers=_em_headers(f"https://quote.eastmoney.com/bk/90.{em_code}.html"),
+    )
     data_dict = r.json()
     result = pd.DataFrame.from_dict(data_dict["data"], orient="index")
     result.rename(field_map, inplace=True)
@@ -272,7 +305,12 @@ def stock_board_concept_hist_em(
         "smplmt": "10000",
         "lmt": "1000000",
     }
-    r = requests.get(url, params=params)
+    r = request_with_retry(
+        url,
+        params=params,
+        session=_em_session(),
+        headers=_em_headers(f"https://quote.eastmoney.com/bk/90.{stock_board_code}.html"),
+    )
     data_json = r.json()
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]["klines"]])
     temp_df.columns = [
@@ -342,7 +380,14 @@ def stock_board_concept_hist_min_em(
             "ndays": "1",
             "secid": f"90.{stock_board_code}",
         }
-        r = requests.get(url, params=params)
+        r = request_with_retry(
+            url,
+            params=params,
+            session=_em_session(),
+            headers=_em_headers(
+                f"https://quote.eastmoney.com/bk/90.{stock_board_code}.html"
+            ),
+        )
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["trends"]]
@@ -376,7 +421,14 @@ def stock_board_concept_hist_min_em(
             "end": "20500101",
             "lmt": "1000000",
         }
-        r = requests.get(url, params=params)
+        r = request_with_retry(
+            url,
+            params=params,
+            session=_em_session(),
+            headers=_em_headers(
+                f"https://quote.eastmoney.com/bk/90.{stock_board_code}.html"
+            ),
+        )
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["klines"]]
@@ -452,7 +504,14 @@ def stock_board_concept_cons_em(symbol: str = "融资融券") -> pd.DataFrame:
         "fields": "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,"
         "f24,f25,f22,f11,f62,f128,f136,f115,f152,f45",
     }
-    temp_df = fetch_paginated_data(url, params)
+    temp_df = fetch_paginated_data(
+        url,
+        params,
+        headers=_em_headers(
+            f"https://quote.eastmoney.com/center/boardlist.html#boards-{stock_board_code}"
+        ),
+        session=_em_session(),
+    )
     temp_df.columns = [
         "序号",
         "_",
