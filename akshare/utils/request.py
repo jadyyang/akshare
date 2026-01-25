@@ -13,6 +13,7 @@ import requests
 from requests.adapters import HTTPAdapter
 
 try:
+    # NOTE(akshare): TLS 指纹模拟支持（东财反爬适配）
     from curl_cffi import requests as curl_requests
 
     _HAS_CURL_CFFI = True
@@ -22,6 +23,7 @@ except Exception:
 
 
 DEFAULT_HEADERS: Dict[str, str] = {
+    # NOTE(akshare): 模拟浏览器请求头，配合会话与 TLS 指纹提升稳定性
     "User-Agent": (
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -44,6 +46,7 @@ def get_session(headers: Optional[Dict[str, str]] = None) -> requests.Session:
     :return: Session
     :rtype: requests.Session
     """
+    # NOTE(akshare): 统一 Session 以保留 Cookie（东财连续请求稳定性）
     session = requests.Session()
     adapter = HTTPAdapter(pool_connections=10, pool_maxsize=10)
     session.mount("http://", adapter)
@@ -67,6 +70,7 @@ def get_tls_session(
     :return: Session 或 None（未安装 curl_cffi）
     :rtype: requests.Session | None
     """
+    # NOTE(akshare): TLS 指纹模拟会话（优先用于东财请求）
     if not _HAS_CURL_CFFI:
         return None
     session = curl_requests.Session(impersonate=impersonate)
@@ -107,6 +111,7 @@ def request_with_retry(
     """
     last_exception = None
 
+    # NOTE(akshare): 允许复用外部 Session 保持 Cookie
     own_session = session is None
     if own_session:
         session = get_session()
@@ -126,6 +131,7 @@ def request_with_retry(
 
             except (requests.RequestException, ValueError) as e:
                 last_exception = e
+                # NOTE(akshare): 输出失败日志，便于定位底层错误
                 logger.warning(
                     "HTTP request failed (attempt %s/%s): %s",
                     attempt + 1,
@@ -160,6 +166,7 @@ def request_with_retry_tls(
     """
     带 TLS 指纹模拟的重试请求（基于 curl_cffi）；不可用时回退到 requests
     """
+    # NOTE(akshare): TLS 指纹模拟不可用时自动回退
     if not _HAS_CURL_CFFI:
         return request_with_retry(
             url,
@@ -173,6 +180,7 @@ def request_with_retry_tls(
             cookies=cookies,
         )
 
+    # NOTE(akshare): 复用 TLS Session 保持 Cookie/连接状态
     own_session = session is None
     if own_session:
         session = get_tls_session(headers=headers, impersonate=impersonate)
@@ -204,6 +212,7 @@ def request_with_retry_tls(
                 return response
             except (requests.RequestException, ValueError) as e:
                 last_exception = e
+                # NOTE(akshare): 输出 TLS 失败日志，便于定位底层错误
                 logger.warning(
                     "TLS request failed (attempt %s/%s): %s",
                     attempt + 1,
@@ -212,6 +221,7 @@ def request_with_retry_tls(
                     extra={"url": url, "params": params},
                 )
                 err_text = str(e)
+                # NOTE(akshare): curl_cffi 异常时回退到 requests
                 if "curl:" in err_text or err_text.startswith("curl:"):
                     if own_session and session is not None:
                         session.close()
