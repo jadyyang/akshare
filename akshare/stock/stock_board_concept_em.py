@@ -14,7 +14,7 @@ from ..utils.redis_cache import lru_cache
 import pandas as pd
 
 from ..utils.func import fetch_paginated_data
-from ..utils.request import get_session, request_with_retry
+from ..utils.request import get_session, get_tls_session, request_with_retry_tls
 
 
 def _em_headers(referer: str) -> dict:
@@ -27,7 +27,10 @@ def _em_headers(referer: str) -> dict:
 
 @functools_lru_cache()
 def _em_session():
-    return get_session()
+    session = get_tls_session()
+    if session is None:
+        session = get_session()
+    return session
 
 
 @lru_cache(
@@ -60,6 +63,7 @@ def __stock_board_concept_name_em() -> pd.DataFrame:
             "https://quote.eastmoney.com/center/boardlist.html#concept_board"
         ),
         session=_em_session(),
+        use_tls_impersonation=True,
     )
     temp_df.columns = [
         "排名",
@@ -146,6 +150,7 @@ def stock_board_concept_name_em() -> pd.DataFrame:
             "https://quote.eastmoney.com/center/boardlist.html#concept_board"
         ),
         session=_em_session(),
+        use_tls_impersonation=True,
     )
     temp_df.columns = [
         "排名",
@@ -240,7 +245,7 @@ def stock_board_concept_spot_em(symbol: str = "可燃冰") -> pd.DataFrame:
         fltt="1",
         secid=f"90.{em_code}",
     )
-    r = request_with_retry(
+    r = request_with_retry_tls(
         url,
         params=params,
         session=_em_session(),
@@ -305,7 +310,7 @@ def stock_board_concept_hist_em(
         "smplmt": "10000",
         "lmt": "1000000",
     }
-    r = request_with_retry(
+    r = request_with_retry_tls(
         url,
         params=params,
         session=_em_session(),
@@ -380,7 +385,7 @@ def stock_board_concept_hist_min_em(
             "ndays": "1",
             "secid": f"90.{stock_board_code}",
         }
-        r = request_with_retry(
+        r = request_with_retry_tls(
             url,
             params=params,
             session=_em_session(),
@@ -421,7 +426,7 @@ def stock_board_concept_hist_min_em(
             "end": "20500101",
             "lmt": "1000000",
         }
-        r = request_with_retry(
+        r = request_with_retry_tls(
             url,
             params=params,
             session=_em_session(),
@@ -511,6 +516,7 @@ def stock_board_concept_cons_em(symbol: str = "融资融券") -> pd.DataFrame:
             f"https://quote.eastmoney.com/center/boardlist.html#boards-{stock_board_code}"
         ),
         session=_em_session(),
+        use_tls_impersonation=True,
     )
     temp_df.columns = [
         "序号",
