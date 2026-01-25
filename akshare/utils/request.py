@@ -4,6 +4,7 @@ Date: 2025/12/31
 Desc: HTTP 请求工具函数
 """
 
+import logging
 import random
 import time
 from typing import Dict, Optional, Tuple
@@ -30,6 +31,9 @@ DEFAULT_HEADERS: Dict[str, str] = {
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
     "Connection": "keep-alive",
 }
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_session(headers: Optional[Dict[str, str]] = None) -> requests.Session:
@@ -122,6 +126,13 @@ def request_with_retry(
 
             except (requests.RequestException, ValueError) as e:
                 last_exception = e
+                logger.warning(
+                    "HTTP request failed (attempt %s/%s): %s",
+                    attempt + 1,
+                    max_retries,
+                    e,
+                    extra={"url": url, "params": params},
+                )
 
                 if attempt < max_retries - 1:
                     # 指数退避 + 随机抖动
@@ -193,6 +204,28 @@ def request_with_retry_tls(
                 return response
             except (requests.RequestException, ValueError) as e:
                 last_exception = e
+                logger.warning(
+                    "TLS request failed (attempt %s/%s): %s",
+                    attempt + 1,
+                    max_retries,
+                    e,
+                    extra={"url": url, "params": params},
+                )
+                err_text = str(e)
+                if "curl:" in err_text or err_text.startswith("curl:"):
+                    if own_session and session is not None:
+                        session.close()
+                    return request_with_retry(
+                        url,
+                        params=params,
+                        timeout=timeout,
+                        max_retries=max_retries,
+                        base_delay=base_delay,
+                        random_delay_range=random_delay_range,
+                        session=None,
+                        headers=headers,
+                        cookies=cookies,
+                    )
                 if attempt < max_retries - 1:
                     delay = base_delay * (2**attempt) + random.uniform(
                         *random_delay_range
