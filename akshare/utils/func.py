@@ -38,6 +38,7 @@ def fetch_paginated_data(
     """
     # 复制参数以避免修改原始参数
     params = base_params.copy()
+    # NOTE(akshare): 支持复用 Session + TLS 指纹（东财反爬适配）
     own_session = session is None
     if own_session:
         if use_tls_impersonation:
@@ -47,6 +48,7 @@ def fetch_paginated_data(
 
     try:
         # 获取第一页数据，用于确定分页信息
+        # NOTE(akshare): 按需选择 TLS/常规请求函数
         request_func = (
             request_with_retry_tls if use_tls_impersonation else request_with_retry
         )

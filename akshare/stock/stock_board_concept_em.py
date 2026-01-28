@@ -18,6 +18,7 @@ from ..utils.request import get_session, get_tls_session, request_with_retry_tls
 
 
 def _em_headers(referer: str) -> dict:
+    # NOTE(akshare): 模拟浏览器 Referer/Origin，提高东财接口稳定性
     return {
         "Accept": "application/json, text/plain, */*",
         "Origin": "https://quote.eastmoney.com",
@@ -27,6 +28,7 @@ def _em_headers(referer: str) -> dict:
 
 @functools_lru_cache()
 def _em_session():
+    # NOTE(akshare): 复用 TLS Session 保持 Cookie（东财连续请求稳定性）
     session = get_tls_session()
     if session is None:
         session = get_session()
@@ -56,6 +58,7 @@ def __stock_board_concept_name_em() -> pd.DataFrame:
         "fs": "m:90 t:3 f:!50",
         "fields": "f2,f3,f4,f8,f12,f14,f15,f16,f17,f18,f20,f21,f24,f25,f22,f33,f11,f62,f128,f124,f107,f104,f105,f136",
     }
+    # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
     temp_df = fetch_paginated_data(
         url,
         params,
@@ -143,6 +146,7 @@ def stock_board_concept_name_em() -> pd.DataFrame:
         "fs": "m:90 t:3 f:!50",
         "fields": "f2,f3,f4,f8,f12,f14,f15,f16,f17,f18,f20,f21,f24,f25,f22,f33,f11,f62,f128,f124,f107,f104,f105,f136",
     }
+    # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
     temp_df = fetch_paginated_data(
         url,
         params,
@@ -245,6 +249,7 @@ def stock_board_concept_spot_em(symbol: str = "可燃冰") -> pd.DataFrame:
         fltt="1",
         secid=f"90.{em_code}",
     )
+    # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
     r = request_with_retry_tls(
         url,
         params=params,
@@ -310,6 +315,7 @@ def stock_board_concept_hist_em(
         "smplmt": "10000",
         "lmt": "1000000",
     }
+    # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
     r = request_with_retry_tls(
         url,
         params=params,
@@ -385,6 +391,7 @@ def stock_board_concept_hist_min_em(
             "ndays": "1",
             "secid": f"90.{stock_board_code}",
         }
+        # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
         r = request_with_retry_tls(
             url,
             params=params,
@@ -426,6 +433,7 @@ def stock_board_concept_hist_min_em(
             "end": "20500101",
             "lmt": "1000000",
         }
+        # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
         r = request_with_retry_tls(
             url,
             params=params,
@@ -509,6 +517,7 @@ def stock_board_concept_cons_em(symbol: str = "融资融券") -> pd.DataFrame:
         "fields": "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,"
         "f24,f25,f22,f11,f62,f128,f136,f115,f152,f45",
     }
+    # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
     temp_df = fetch_paginated_data(
         url,
         params,
