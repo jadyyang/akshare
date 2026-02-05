@@ -3236,7 +3236,7 @@ __author__ = "AKFamily"
 """
 国债收益率
 """
-from akshare.bond.bond_gb_sina import bond_gb_zh_sina, bond_gb_us_sina
+from .bond.bond_gb_sina import bond_gb_zh_sina, bond_gb_us_sina
 
 """
 openctp-合约信息接口
