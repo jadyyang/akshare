@@ -18,8 +18,8 @@ import pandas as pd
 import requests
 from io import StringIO
 
-from akshare.futures import cons
-from akshare.utils.cons import headers
+from ..futures import cons
+from ..utils.cons import headers
 
 gfex_headers = {
     "Accept": "application/json, text/javascript, */*; q=0.01",

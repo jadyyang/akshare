@@ -9,7 +9,7 @@ https://fund.eastmoney.com/data/fundfenhong.html
 import pandas as pd
 import requests
 
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def fund_fh_em(
