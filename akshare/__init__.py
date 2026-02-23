@@ -3231,10 +3231,24 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.18.23 fix: fix fund_fee_em interface
 1.18.24 fix: fix stock_individual_spot_xq interface
 1.18.25 fix: fix qdii_e_comm_jsl interface
+1.18.26 fix: fix fund_fh_em interface
+1.18.27 fix: fix futures_comm_js interface
 """
 
 from ._version import __version__
 __author__ = "AKFamily"
+
+"""
+期货结算
+"""
+from .futures.futures_settle import (
+    futures_settle,
+    futures_settle_gfex,
+    futures_settle_ine,
+    futures_settle_czce,
+    futures_settle_cffex,
+    futures_settle_shfe,
+)
 
 """
 国债收益率
@@ -3481,6 +3495,11 @@ from .futures_derivative.futures_contract_info_ine import futures_contract_info_
 上海期货交易所-指定交割仓库-库存周报
 """
 from .futures.futures_stock_js import futures_stock_shfe_js
+
+"""
+金十数据-期货手续费
+"""
+from .futures.futures_comm_js import futures_comm_js
 
 """
 东方财富-数据中心-沪深港通-市场概括-分时数据
