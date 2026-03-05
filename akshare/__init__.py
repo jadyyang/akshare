@@ -4871,7 +4871,7 @@ from .stock_fundamental.stock_ipo_review import stock_ipo_review_em
 """
 同花顺-新股申购与中签
 """
-from akshare.stock_fundamental.stock_ipo_ths import (
+from .stock_fundamental.stock_ipo_ths import (
     stock_ipo_ths,
     stock_ipo_hk_ths,
 )
