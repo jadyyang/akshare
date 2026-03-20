@@ -16,7 +16,7 @@ from .cons import (
     hk_sina_stock_hist_hfq_url,
     hk_sina_stock_hist_qfq_url,
 )
-from akshare.utils.tqdm import get_tqdm
+from ..utils.tqdm import get_tqdm
 
 
 def stock_hk_spot() -> pd.DataFrame:
