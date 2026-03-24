@@ -89,6 +89,14 @@
 
 ## 更新说明详情
 
+1.18.45 fix: fix stock_a_high_low_statistics interface
+
+	1. 修复 stock_a_high_low_statistics 接口
+
+1.18.44 fix: fix index_option_50etf_qvix interface
+
+	1. 修复 index_option_50etf_qvix 接口
+
 1.18.43 fix: fix stock_financial_abstract_new_ths interface
 
 	1. 修复 stock_financial_abstract_new_ths 接口
@@ -6205,6 +6213,10 @@
     3. 修改 air_quality_hist 接口的请求日期格式，从 '2022-01-01' 为 '20220101'
 
 ## 版本更新说明
+
+1.18.45 fix: fix stock_a_high_low_statistics interface
+
+1.18.44 fix: fix index_option_50etf_qvix interface
 
 1.18.43 fix: fix stock_financial_abstract_new_ths interface
 
