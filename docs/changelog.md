@@ -89,6 +89,14 @@
 
 ## 更新说明详情
 
+1.18.49 fix: fix macro_china_urban_unemployment interface
+
+	1. 修复 macro_china_urban_unemployment 接口
+
+1.18.48 fix: fix stock_individual_spot_xq interface
+
+	1. 修复 stock_individual_spot_xq 接口
+
 1.18.47 fix: fix stock_margin_underlying_info_szse interface
 
 	1. 修复 stock_margin_underlying_info_szse 接口
@@ -6222,6 +6230,10 @@
     3. 修改 air_quality_hist 接口的请求日期格式，从 '2022-01-01' 为 '20220101'
 
 ## 版本更新说明
+
+1.18.49 fix: fix macro_china_urban_unemployment interface
+
+1.18.48 fix: fix stock_individual_spot_xq interface
 
 1.18.47 fix: fix stock_margin_underlying_info_szse interface
 
