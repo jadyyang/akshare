@@ -3756,7 +3756,7 @@ from .fund.fund_etf_szse import fund_etf_scale_szse
 """
 深圳证券交易所-基金规模日频数据
 """
-from akshare.fund.fund_scale_szse import fund_scale_daily_szse
+from .fund.fund_scale_szse import fund_scale_daily_szse
 
 """
 乐咕乐股-股债利差
