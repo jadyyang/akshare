@@ -3260,6 +3260,8 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.18.52 fix: fix fund_scale_daily_szse interface
 1.18.53 fix: fix futures_hist_daily_cffex interface
 1.18.54 fix: fix stock_individual_notice_report interface
+1.18.55 fix: fix bond_index_general_cbond interface
+1.18.56 fix: fix stock_zh_a_spot_tx interface
 """
 
 from ._version import __version__
@@ -3914,11 +3916,14 @@ from .stock_feature.stock_hsgt_exchange_rate import (
 )
 
 """
-中国债券信息网-中债指数-中债指数族系-总指数-综合类指数
+中国债券信息网-中债指数-中债指数族系
 """
 from .bond.bond_cbond import (
     bond_new_composite_index_cbond,
     bond_composite_index_cbond,
+    bond_available_index_cbond,
+    bond_index_general_cbond,
+    bond_treasury_index_cbond,
 )
 
 """
