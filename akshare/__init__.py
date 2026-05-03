@@ -3265,10 +3265,16 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.18.57 fix: fix bond_info_detail_cm interface
 1.18.58 fix: fix stock_individual_spot_xq interface
 1.18.59 fix: fix stock_board_concept_hist_min_em interface
+1.18.60 fix: fix stock_zh_index_daily_tx interface
 """
 
 from ._version import __version__
 __author__ = "AKFamily"
+
+"""
+TapTap 游戏榜单
+"""
+from akshare.other.other_taptap import game_hot_rank_taptap
 
 """
 期货结算
@@ -3475,6 +3481,11 @@ from .option.option_daily_stats_sse_szse import option_daily_stats_sse, option_d
 同花顺理财-基金数据-每日净值-ETF
 """
 from .fund.fund_etf_ths import fund_etf_spot_ths, fund_etf_category_ths
+
+"""
+同花顺-基金数据-基金基本信息
+"""
+from akshare.fund.fund_info_ths import fund_info_ths
 
 """
 东方财富网-数据中心-融资融券-融资融券账户统计-两融账户信息
