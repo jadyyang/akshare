@@ -3274,7 +3274,7 @@ __author__ = "AKFamily"
 """
 TapTap 游戏榜单
 """
-from akshare.other.other_taptap import game_hot_rank_taptap
+from .other.other_taptap import game_hot_rank_taptap
 
 """
 期货结算
@@ -3485,7 +3485,7 @@ from .fund.fund_etf_ths import fund_etf_spot_ths, fund_etf_category_ths
 """
 同花顺-基金数据-基金基本信息
 """
-from akshare.fund.fund_info_ths import fund_info_ths
+from .fund.fund_info_ths import fund_info_ths
 
 """
 东方财富网-数据中心-融资融券-融资融券账户统计-两融账户信息
