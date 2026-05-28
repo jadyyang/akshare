@@ -4,7 +4,7 @@
 #   make version v1.17.26.1 - 设置版本号
 #   make show-version       - 显示当前版本
 
-.PHONY: help version show-version deploy sync-check sync-merge sync-rewrite sync-validate sync-publish sync-deploy sync-run
+.PHONY: help version show-version deploy
 
 # 默认目标
 help:
@@ -20,13 +20,6 @@ help:
 	@echo "  version bump       - 发布构建版本 (vX.Y.Z.W)"
 	@echo "  version vX.Y.Z.W   - 设置指定版本"
 	@echo "  show-version       - 显示当前部署版本"
-	@echo "  sync-check         - 检查上游仓库是否有新版本"
-	@echo "  sync-merge TAG=... - 合并指定上游 tag"
-	@echo "  sync-rewrite       - 将包内绝对导入改为相对导入"
-	@echo "  sync-validate      - 校验同步结果"
-	@echo "  sync-publish MSG=... [TAG=...] - 提交并推送代码"
-	@echo "  sync-deploy        - 通过 SSH 更新部署机器代码"
-	@echo "  sync-run           - 执行完整同步流程，可配合 DRY_RUN=1 预览"
 
 # 统一版本管理命令
 version:
@@ -70,35 +63,6 @@ v%:
 show-version:
 	@chmod +x scripts/get-version.sh
 	@./scripts/get-version.sh
-
-sync-check:
-	@python3 -m tools.ak_sync.cli check-upstream
-
-sync-merge:
-	@if [ -z "$(TAG)" ]; then \
-		echo "请通过 TAG=v1.18.64 指定上游 tag"; \
-		exit 1; \
-	fi
-	@python3 -m tools.ak_sync.cli merge-upstream --tag $(TAG)
-
-sync-rewrite:
-	@python3 -m tools.ak_sync.cli rewrite-imports
-
-sync-validate:
-	@python3 -m tools.ak_sync.cli validate
-
-sync-publish:
-	@if [ -z "$(MSG)" ]; then \
-		echo "请通过 MSG='...' 指定提交信息"; \
-		exit 1; \
-	fi
-	@python3 -m tools.ak_sync.cli publish --message "$(MSG)" $(if $(TAG),--tag $(TAG),)
-
-sync-deploy:
-	@python3 -m tools.ak_sync.cli deploy
-
-sync-run:
-	@python3 -m tools.ak_sync.cli run-all $(if $(UPSTREAM_TAG),--tag $(UPSTREAM_TAG),) $(if $(FORCE),--force,) $(if $(DRY_RUN),--dry-run,) $(if $(PUBLISH),--publish,) $(if $(PUBLISH_TAG),--publish-tag $(PUBLISH_TAG),) $(if $(MSG),--commit-message "$(MSG)",) $(if $(DEPLOY),--deploy,)
 
 # 完整部署流程（版本管理 + 远程构建 + 远程重启）
 deploy:
