@@ -22,6 +22,7 @@ class MailConfig:
     from_addr: str = ""
     to_addrs: list[str] = field(default_factory=list)
     use_tls: bool = True
+    security: str = "starttls"
 
 
 @dataclass
@@ -52,15 +53,25 @@ def load_config(repo_root: Path) -> SyncConfig:
     to_addrs = _split_csv(env.get("AKSYNC_MAIL_TO", ""))
     mail_username = env.get("AKSYNC_MAIL_USERNAME", "")
     mail_from = env.get("AKSYNC_MAIL_FROM", mail_username)
+    mail_port = int(env.get("AKSYNC_MAIL_SMTP_PORT", "587"))
+    mail_security = env.get("AKSYNC_MAIL_SECURITY", "").strip().lower()
+    if not mail_security:
+        if mail_port == 465:
+            mail_security = "ssl"
+        elif env.get("AKSYNC_MAIL_USE_TLS", "true").lower() != "false":
+            mail_security = "starttls"
+        else:
+            mail_security = "none"
     mail = MailConfig(
         enabled=bool(mail_username and env.get("AKSYNC_MAIL_PASSWORD") and to_addrs),
         smtp_host=env.get("AKSYNC_MAIL_SMTP_HOST", "smtp.office365.com"),
-        smtp_port=int(env.get("AKSYNC_MAIL_SMTP_PORT", "587")),
+        smtp_port=mail_port,
         username=mail_username,
         password=env.get("AKSYNC_MAIL_PASSWORD", ""),
         from_addr=mail_from,
         to_addrs=to_addrs,
         use_tls=env.get("AKSYNC_MAIL_USE_TLS", "true").lower() != "false",
+        security=mail_security,
     )
     ssh_options = _split_csv(env.get("AKSYNC_SSH_OPTIONS", ""))
     deploy_hosts = _split_csv(env.get("AKSYNC_DEPLOY_HOSTS", "")) or list(DEFAULT_DEPLOY_HOSTS)

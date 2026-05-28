@@ -73,17 +73,42 @@ export AKSYNC_SSH_OPTIONS=-o BatchMode=yes,-o ConnectTimeout=10
 
 ### 邮件通知
 
-Hotmail 建议使用 Office 365 SMTP：
+163 邮箱推荐使用 SSL：
+
+```bash
+export AKSYNC_MAIL_SMTP_HOST=smtp.163.com
+export AKSYNC_MAIL_SMTP_PORT=465
+export AKSYNC_MAIL_SECURITY=ssl
+export AKSYNC_MAIL_USERNAME=your_account@163.com
+export AKSYNC_MAIL_PASSWORD=your_password_or_app_password
+export AKSYNC_MAIL_FROM=your_account@163.com
+export AKSYNC_MAIL_TO=alice@example.com,bob@example.com
+```
+
+如果使用 Hotmail / Office 365，则推荐：
 
 ```bash
 export AKSYNC_MAIL_SMTP_HOST=smtp.office365.com
 export AKSYNC_MAIL_SMTP_PORT=587
+export AKSYNC_MAIL_SECURITY=starttls
 export AKSYNC_MAIL_USE_TLS=true
 export AKSYNC_MAIL_USERNAME=your_hotmail_account@hotmail.com
 export AKSYNC_MAIL_PASSWORD=your_password_or_app_password
 export AKSYNC_MAIL_FROM=your_hotmail_account@hotmail.com
 export AKSYNC_MAIL_TO=alice@example.com,bob@example.com
 ```
+
+邮件安全模式支持：
+
+- `AKSYNC_MAIL_SECURITY=ssl`: 适合 `465`
+- `AKSYNC_MAIL_SECURITY=starttls`: 适合 `587`
+- `AKSYNC_MAIL_SECURITY=none`: 不启用加密
+
+如果未设置 `AKSYNC_MAIL_SECURITY`，程序会自动推断：
+
+- `465` 默认视为 `ssl`
+- 其他端口在 `AKSYNC_MAIL_USE_TLS=true` 时默认视为 `starttls`
+- 否则视为 `none`
 
 只有 `AKSYNC_MAIL_USERNAME`、`AKSYNC_MAIL_PASSWORD` 和 `AKSYNC_MAIL_TO` 都配置时，邮件通知才会启用。
 

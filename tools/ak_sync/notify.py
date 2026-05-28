@@ -15,9 +15,13 @@ def send_mail(config: MailConfig, subject: str, body: str) -> None:
     message["To"] = ", ".join(config.to_addrs)
     message.set_content(body)
 
-    with smtplib.SMTP(config.smtp_host, config.smtp_port, timeout=30) as smtp:
-        if config.use_tls:
+    if config.security == "ssl":
+        smtp_client = smtplib.SMTP_SSL(config.smtp_host, config.smtp_port, timeout=30)
+    else:
+        smtp_client = smtplib.SMTP(config.smtp_host, config.smtp_port, timeout=30)
+
+    with smtp_client as smtp:
+        if config.security == "starttls":
             smtp.starttls()
         smtp.login(config.username, config.password)
         smtp.send_message(message)
-
