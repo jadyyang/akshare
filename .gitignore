@@ -88,3 +88,4 @@ docs/_build/
 # Sync automation
 .ak-sync-logs/
 .ak-sync-state.json
+scripts/ak_sync.env
