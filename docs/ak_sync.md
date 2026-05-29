@@ -264,9 +264,9 @@ python3 -m tools.ak_sync.cli run-all --tag release-v1.18.64 --publish --deploy
     <key>WorkingDirectory</key>
     <string>/Users/jadyyang/code/repos/akshare</string>
     <key>StandardOutPath</key>
-    <string>/Users/jadyyang/code/repos/akshare/.ak-sync-launchd.out.log</string>
+    <string>/Users/jadyyang/code/repos/akshare/.ak-sync-logs/.ak-sync-launchd.out.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/jadyyang/code/repos/akshare/.ak-sync-launchd.err.log</string>
+    <string>/Users/jadyyang/code/repos/akshare/.ak-sync-logs/.ak-sync-launchd.err.log</string>
     <key>RunAtLoad</key>
     <true/>
 </dict>
