@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sys
 from datetime import datetime
 import urllib.error
@@ -26,18 +27,26 @@ def ensure_upstream_remote(config, ctx: RunContext) -> None:
 
 
 def fetch_latest_release(config) -> dict:
+    headers = {'Accept': 'application/vnd.github+json', 'User-Agent': 'ak-sync'}
+    github_token = __import__('os').environ.get('AKSYNC_GITHUB_TOKEN', '').strip()
+    if github_token:
+        headers['Authorization'] = f'Bearer {github_token}'
     request = urllib.request.Request(
         f"{config.upstream_api}/releases/latest",
-        headers={"Accept": "application/vnd.github+json", "User-Agent": "ak-sync"},
+        headers=headers,
     )
     with urllib.request.urlopen(request, timeout=30) as response:
         return json.loads(response.read().decode("utf-8"))
 
 
 def fetch_latest_tag(config) -> dict:
+    headers = {'Accept': 'application/vnd.github+json', 'User-Agent': 'ak-sync'}
+    github_token = __import__('os').environ.get('AKSYNC_GITHUB_TOKEN', '').strip()
+    if github_token:
+        headers['Authorization'] = f'Bearer {github_token}'
     request = urllib.request.Request(
         f"{config.upstream_api}/tags?per_page=1",
-        headers={"Accept": "application/vnd.github+json", "User-Agent": "ak-sync"},
+        headers=headers,
     )
     with urllib.request.urlopen(request, timeout=30) as response:
         payload = json.loads(response.read().decode("utf-8"))
@@ -53,17 +62,52 @@ def fetch_latest_tag(config) -> dict:
     }
 
 
+def fetch_latest_tag_via_git(config) -> dict:
+    output = run_cmd(
+        ["git", "ls-remote", "--tags", config.upstream_remote],
+        cwd=config.repo_root,
+        check=True,
+    ).stdout.splitlines()
+    tags: list[str] = []
+    for line in output:
+        if not line.strip() or "refs/tags/" not in line:
+            continue
+        ref = line.split("refs/tags/", 1)[1]
+        if ref.endswith("^{}"):
+            ref = ref[:-3]
+        tags.append(ref)
+    if not tags:
+        raise SyncError("无法通过 git 获取上游 tags")
+    latest = sorted(set(tags), key=version_sort_key)
+    release_tags = [tag for tag in latest if tag.startswith("release-v")]
+    chosen = release_tags[-1] if release_tags else latest[-1]
+    return {
+        "tag_name": chosen,
+        "name": chosen,
+        "html_url": f"https://github.com/akfamily/akshare/releases/tag/{chosen}",
+        "body": "",
+        "source": "git-tags",
+    }
+
+
 def get_upstream_release_info(config) -> dict:
     try:
         payload = fetch_latest_release(config)
         payload["source"] = "releases"
         return payload
     except urllib.error.HTTPError as err:
-        if err.code != 404:
+        if err.code not in {403, 404}:
             raise SyncError(f"获取上游 release 失败: HTTP {err.code}") from err
     except urllib.error.URLError as err:
         raise SyncError(f"获取上游 release 失败: {err}") from err
-    return fetch_latest_tag(config)
+    try:
+        return fetch_latest_tag(config)
+    except urllib.error.HTTPError as err:
+        if err.code != 403:
+            raise SyncError(f"获取上游 tags 失败: HTTP {err.code}") from err
+    except urllib.error.URLError as err:
+        raise SyncError(f"获取上游 tags 失败: {err}") from err
+    return fetch_latest_tag_via_git(config)
 
 
 def build_compare_url(previous_tag: str, current_tag: str) -> str:
@@ -87,6 +131,67 @@ def git_output(repo_root: Path, *args: str) -> str:
     return run_cmd(["git", *args], cwd=repo_root, check=True).stdout.strip()
 
 
+def print_step(step_no: int, total_steps: int, message: str) -> None:
+    print(f"📍 步骤 {step_no}/{total_steps}: {message}")
+
+
+def print_ok(message: str) -> None:
+    print(f"✅ {message}")
+
+
+def print_warn(message: str) -> None:
+    print(f"⚠️ {message}")
+
+
+def print_fail(message: str) -> None:
+    print(f"❌ {message}")
+
+
+def normalize_upstream_version(upstream_tag: str) -> str:
+    tag = upstream_tag.strip()
+    if tag.startswith("release-"):
+        tag = tag[len("release-") :]
+    if not tag.startswith("v"):
+        raise SyncError(f"无法从上游版本解析本地版本前缀: {upstream_tag}")
+    version_core = tag[1:]
+    parts = version_core.split(".")
+    if len(parts) != 3 or not all(part.isdigit() for part in parts):
+        raise SyncError(f"上游版本格式不符合预期，应为 vX.Y.Z: {upstream_tag}")
+    return tag
+
+
+def version_sort_key(tag: str) -> tuple[int, ...]:
+    normalized = normalize_upstream_version(tag)
+    return tuple(int(part) for part in normalized[1:].split("."))
+
+
+def calculate_publish_tag(repo_root: Path, upstream_tag: str) -> str:
+    normalized = normalize_upstream_version(upstream_tag)
+    prefix = f"{normalized}."
+    existing = git_output(repo_root, "tag", "-l", f"{prefix}*").splitlines()
+    build_numbers: list[int] = []
+    for tag in existing:
+        suffix = tag.removeprefix(prefix)
+        if suffix.isdigit():
+            build_numbers.append(int(suffix))
+    next_build = max(build_numbers) + 1 if build_numbers else 0
+    return f"{prefix}{next_build}"
+
+
+def prune_old_logs(log_root: Path, keep_days: int = 7, keep_latest: int = 20) -> dict[str, int]:
+    if not log_root.exists():
+        return {"removed": 0}
+    now = datetime.now().timestamp()
+    removed = 0
+    run_dirs = sorted((path for path in log_root.iterdir() if path.is_dir()), key=lambda item: item.stat().st_mtime, reverse=True)
+    for index, path in enumerate(run_dirs):
+        age_days = (now - path.stat().st_mtime) / 86400
+        if index >= keep_latest and age_days > keep_days:
+            shutil.rmtree(path, ignore_errors=True)
+            removed += 1
+    return {"removed": removed}
+
+
 def ensure_clean_worktree(repo_root: Path) -> None:
     status = git_output(repo_root, "status", "--short")
     if status:
@@ -107,6 +212,8 @@ def collect_summary(repo_root: Path, previous_tag: str, upstream_tag: str, relea
         f"上游来源: {release.get('source', 'unknown')}",
         f"上游发布页: {release.get('html_url', '')}",
     ]
+    if publish_tag:
+        summary_lines.append(f"本地发布版本: {publish_tag}")
     compare_url = build_compare_url(previous_tag, upstream_tag)
     if compare_url:
         summary_lines.append(f"上游对比页: {compare_url}")
@@ -133,8 +240,6 @@ def collect_summary(repo_root: Path, previous_tag: str, upstream_tag: str, relea
         summary_lines.append(f"需人工检查 import 文件数: {len(manual_files)}")
         if manual_files:
             summary_lines.append(f"人工检查文件: {', '.join(manual_files)}")
-    if publish_tag:
-        summary_lines.append(f"发布标签: {publish_tag}")
     if publish_payload is not None:
         summary_lines.append(f"发布是否跳过: {'是' if publish_payload.get('skipped') else '否'}")
         if publish_payload.get("reason"):
@@ -187,6 +292,7 @@ def command_check_upstream(args: argparse.Namespace) -> int:
         "release_url": release.get("html_url", ""),
         "source": release.get("source", "unknown"),
         "compare_url": build_compare_url(previous_tag, latest_tag),
+        "next_publish_tag": calculate_publish_tag(repo_root, latest_tag),
     }
     print(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0 if not args.fail_when_no_update or needs_sync else 1
@@ -219,7 +325,7 @@ def command_merge_upstream(args: argparse.Namespace) -> int:
             f"若确认放弃本次合并，可执行: git merge --abort\n"
             f"原始错误:\n{err}"
         ) from err
-    print(f"已合并上游版本 {args.tag or merge_ref}，日志目录: {ctx.run_dir}")
+    print_ok(f"已合并上游版本 {args.tag or merge_ref}，日志目录: {ctx.run_dir}")
     return 0
 
 
@@ -251,7 +357,7 @@ def command_validate(_: argparse.Namespace) -> int:
     )
     if import_scan.returncode == 0 and import_scan.stdout.strip():
         raise SyncError(f"仍存在包内绝对导入:\n{import_scan.stdout}")
-    print(f"校验通过，日志目录: {ctx.run_dir}")
+    print_ok(f"校验通过，日志目录: {ctx.run_dir}")
     return 0
 
 
@@ -309,21 +415,28 @@ def command_run_all(args: argparse.Namespace) -> int:
     upstream_tag = args.tag or release["tag_name"]
     upstream_ref = args.ref or release["tag_name"]
     previous_tag = state.get("last_upstream_tag", "")
-    if upstream_tag == previous_tag and not args.force:
-        print(f"上游版本 {upstream_tag} 已处理，无需重复执行")
-        return 0
-
+    publish_tag = args.publish_tag or calculate_publish_tag(repo_root, upstream_tag)
     rewrite_payload = None
     deploy_payload = None
     compare_payload = None
     publish_payload = None
+
     try:
+        ensure_clean_worktree(repo_root)
+        if upstream_tag == previous_tag and not args.force:
+            prune_result = prune_old_logs(config.log_root)
+            if prune_result["removed"]:
+                print_warn(f"本次未更新，已清理旧日志目录 {prune_result['removed']} 个")
+            return 0
+
         try:
             compare_payload = fetch_compare_info(previous_tag, upstream_tag)
         except Exception:
             compare_payload = None
         if args.dry_run:
             rewrite_payload = scan_rewrite_candidates(repo_root)
+            print_step(1, 6, "检查上游版本")
+            print_ok(f"发现新上游版本 {upstream_tag}")
             summary_lines = collect_summary(
                 repo_root,
                 previous_tag,
@@ -331,7 +444,7 @@ def command_run_all(args: argparse.Namespace) -> int:
                 release,
                 rewrite_payload,
                 None,
-                args.publish_tag,
+                publish_tag,
                 compare_payload,
                 True,
                 None,
@@ -342,27 +455,43 @@ def command_run_all(args: argparse.Namespace) -> int:
             summary_lines.append(f"计划执行 deploy: {'是' if args.deploy else '否'}")
             print("\n".join(summary_lines))
             return 0
+        print_step(1, 6, "检查上游版本")
+        print_ok(f"发现新上游版本 {upstream_tag}")
+        print_step(2, 6, "合并上游代码")
         command_merge_upstream(argparse.Namespace(tag=upstream_tag, ref=upstream_ref))
+        print_step(3, 6, "改写包内绝对导入")
         rewrite_payload = json.loads(run_cmd([sys.executable, "-m", "tools.ak_sync.cli", "rewrite-imports", "--json"], cwd=repo_root, check=True).stdout)
+        print_ok(f"导入改写完成，变更文件 {len(rewrite_payload.get('changed_files', []))} 个")
+        print_step(4, 6, "执行基础校验")
         command_validate(argparse.Namespace())
-        publish_tag = args.publish_tag
         if args.publish:
+            print_step(5, 6, f"提交并发布版本 {publish_tag}")
             publish_payload = json.loads(run_cmd([sys.executable, "-m", "tools.ak_sync.cli", "publish", "--message", args.commit_message, *(["--tag", publish_tag] if publish_tag else [])], cwd=repo_root, check=True).stdout)
+            if publish_payload.get("skipped"):
+                print_warn(f"发布已跳过: {publish_payload.get('reason', 'unknown')}")
+            else:
+                print_ok(f"版本 {publish_tag} 已提交并推送")
         if args.deploy:
+            print_step(6, 6, "部署到目标机器")
             deploy_payload = json.loads(run_cmd([sys.executable, "-m", "tools.ak_sync.cli", "deploy", "--json"], cwd=repo_root, check=True).stdout)
+            print_ok("部署步骤执行完成")
         state["last_upstream_tag"] = upstream_tag
         state["last_release_url"] = release.get("html_url", "")
+        state["last_publish_tag"] = publish_tag
         save_state(config.state_file, state)
+        prune_result = prune_old_logs(config.log_root)
         summary_lines = collect_summary(repo_root, previous_tag, upstream_tag, release, rewrite_payload, deploy_payload, publish_tag, compare_payload, False, publish_payload)
+        if prune_result["removed"]:
+            summary_lines.append(f"日志清理数量: {prune_result['removed']}")
         summary_lines.append("结果: 成功")
-        send_mail(config.mail, f"[ak-sync] 成功同步 {upstream_tag}", "\n".join(summary_lines))
+        send_mail(config.mail, f"✅ [ak-sync] 同步成功 {upstream_tag} -> {publish_tag}", "\n".join(summary_lines))
         print("\n".join(summary_lines))
         return 0
     except Exception as err:
-        summary_lines = collect_summary(repo_root, previous_tag, upstream_tag, release, rewrite_payload, deploy_payload, args.publish_tag, compare_payload, False, publish_payload)
+        summary_lines = collect_summary(repo_root, previous_tag, upstream_tag, release, rewrite_payload, deploy_payload, publish_tag, compare_payload, False, publish_payload)
         summary_lines.append("结果: 失败")
         summary_lines.append(f"错误: {err}")
-        send_mail(config.mail, f"[ak-sync] 同步失败 {upstream_tag}", "\n".join(summary_lines))
+        send_mail(config.mail, f"❌ [ak-sync] 同步失败 {upstream_tag}", "\n".join(summary_lines))
         raise
 
 
@@ -414,7 +543,7 @@ def main() -> int:
     try:
         return args.func(args)
     except SyncError as err:
-        print(f"错误: {err}", file=sys.stderr)
+        print_fail(str(err))
         return 1
 
 

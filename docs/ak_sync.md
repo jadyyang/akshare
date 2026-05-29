@@ -9,6 +9,7 @@
 5. 提交并推送到当前仓库
 6. 通过 SSH 进入部署机器执行 `git pull`
 7. 发送成功或失败邮件通知
+8. 清理旧日志目录
 
 工具入口：
 
@@ -25,7 +26,7 @@ make sync-rewrite
 make sync-validate
 make sync-publish MSG='sync: merge upstream release-v1.18.64' TAG=v1.18.64.0
 make sync-deploy
-make sync-run PUBLISH=1 DEPLOY=1 PUBLISH_TAG=v1.18.64.0 MSG='sync: merge upstream release-v1.18.64'
+make sync-run PUBLISH=1 DEPLOY=1 MSG='sync: merge upstream release-v1.18.64'
 make sync-run DRY_RUN=1
 ```
 
@@ -55,6 +56,13 @@ export AKSYNC_LOG_ROOT=/Users/jadyyang/code/repos/akshare/.ak-sync-logs
 ```
 
 状态文件用于记录最近一次处理成功的上游版本。
+
+版本规则：
+
+- 上游版本如果是 `release-v1.18.64`，会归一化成 `v1.18.64`
+- 你本地第一个发布版本是 `v1.18.64.0`
+- 如果在相同上游版本上再次发布，则依次变成 `v1.18.64.1`、`v1.18.64.2`
+- 发布版本以 git tag 为准
 
 ### 部署 SSH
 
@@ -130,7 +138,8 @@ python3 -m tools.ak_sync.cli check-upstream
   "release_name": "release-v1.18.64",
   "release_url": "https://github.com/akfamily/akshare/releases/tag/release-v1.18.64",
   "source": "releases",
-  "compare_url": "https://github.com/akfamily/akshare/compare/v1.18.62...release-v1.18.64"
+  "compare_url": "https://github.com/akfamily/akshare/compare/v1.18.62...release-v1.18.64",
+  "next_publish_tag": "v1.18.64.0"
 }
 ```
 
@@ -197,10 +206,14 @@ cd /home/jadyyang/code/finance/finance/spider/airflow \
 ```bash
 python3 -m tools.ak_sync.cli run-all \
   --publish \
-  --publish-tag v1.18.64.0 \
   --commit-message 'sync: merge upstream release-v1.18.64 and rewrite internal imports' \
   --deploy
 ```
+
+说明：
+
+- 如果不显式传 `--publish-tag`，程序会自动计算下一个版本，例如 `v1.18.64.0`
+- 版本号计算基于已有 git tags
 
 如果只想预览将会执行什么，不实际修改仓库：
 
@@ -221,17 +234,67 @@ python3 -m tools.ak_sync.cli run-all --tag release-v1.18.64 --publish --deploy
 - 预估需要改写 import 的文件数
 - 上游 compare 链接
 - 上游提交摘要
+- 预计发布版本号
 - 是否计划 publish / deploy
 
 ## 定时执行
 
-推荐使用 `cron`。示例：每天上午 9 点检查并执行完整流程。
+推荐在 macOS 上使用 `launchd`，比 `cron` 更符合系统习惯。也可以继续用 `cron`。
 
-```cron
-0 9 * * * /bin/zsh -lc 'cd /Users/jadyyang/code/repos/akshare && chmod +x scripts/run_ak_sync.sh && ./scripts/run_ak_sync.sh' >> /Users/jadyyang/code/repos/akshare/.ak-sync-cron.log 2>&1
+### 方案 A: launchd
+
+1. 创建 plist 文件，例如 `~/Library/LaunchAgents/com.jadyyang.ak-sync.plist`
+2. 填入下面内容：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.jadyyang.ak-sync</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>-lc</string>
+        <string>cd /Users/jadyyang/code/repos/akshare && ./scripts/run_ak_sync.sh</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>3600</integer>
+    <key>WorkingDirectory</key>
+    <string>/Users/jadyyang/code/repos/akshare</string>
+    <key>StandardOutPath</key>
+    <string>/Users/jadyyang/code/repos/akshare/.ak-sync-launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/jadyyang/code/repos/akshare/.ak-sync-launchd.err.log</string>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
 ```
 
-建议先手工跑通后再加到 `cron`。
+3. 加载任务：
+
+```bash
+launchctl load ~/Library/LaunchAgents/com.jadyyang.ak-sync.plist
+```
+
+4. 如果改了配置，先卸载再加载：
+
+```bash
+launchctl unload ~/Library/LaunchAgents/com.jadyyang.ak-sync.plist
+launchctl load ~/Library/LaunchAgents/com.jadyyang.ak-sync.plist
+```
+
+### 方案 B: cron
+
+如果你更习惯 `cron`，也可以每小时执行一次：
+
+```cron
+0 * * * * /bin/zsh -lc 'cd /Users/jadyyang/code/repos/akshare && ./scripts/run_ak_sync.sh' >> /Users/jadyyang/code/repos/akshare/.ak-sync-cron.log 2>&1
+```
+
+建议先手工跑通后再加到定时任务。
 
 如果你想把环境变量和代码分开管理，可以：
 
@@ -249,14 +312,28 @@ AKSYNC_DRY_RUN=1 ./scripts/run_ak_sync.sh
 
 每次执行会在 `.ak-sync-logs/<timestamp>/` 下生成日志文件，用于排查问题。
 
+日志清理策略：
+
+- 默认只保留最近 7 天且最近 20 次以内的日志目录
+- 每次 `run-all` 执行结束时自动清理
+- 如果本次没有发现上游新版本，也会静默清理旧日志，但不会发邮件
+- 但在判断“无更新”之前，仍然会先检查本地 git 工作区是否干净；如果不干净，会直接报错并发失败邮件
+
 成功邮件和失败邮件会尽量包含这些信息：
 
 - 上游 release 链接
 - 上游 compare 链接
 - 上游提交数、文件数
 - 前 10 条提交标题摘要
+- 本地发布版本号
 - import 改写统计
 - 部署成功/失败主机汇总
+
+邮件策略：
+
+- 成功时邮件标题以 `✅` 开头
+- 失败时邮件标题以 `❌` 开头
+- 如果本次没有发现上游更新，则不发邮件，避免频繁干扰
 
 ## 当前限制
 
