@@ -89,6 +89,19 @@
 
 ## 更新说明详情
 
+1.18.69 fix: fix stock_zh_a_hist_tx interface
+
+	1. 修复 stock_zh_a_hist_tx 接口
+
+1.18.68 fix: fix index_realtime_sw interface
+
+	1. 修复 index_realtime_sw 接口
+
+1.18.67 fix: fix stock_zh_a_disclosure_report_cninfo interface
+
+	1. 修复 stock_zh_a_disclosure_report_cninfo 接口
+	2. 修复 stock_zh_a_disclosure_relation_cninfo 接口
+
 1.18.66 fix: fix stock_yysj_em interface
 
 	1. 修复 stock_yysj_em 接口

@@ -3272,6 +3272,9 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.18.64 fix: fix stock_buffett_index_lg interface
 1.18.65 fix: fix fund_portfolio_hold_em interface
 1.18.66 fix: fix stock_yysj_em interface
+1.18.67 fix: fix stock_zh_a_disclosure_report_cninfo interface
+1.18.68 fix: fix index_realtime_sw interface
+1.18.69 fix: fix stock_zh_a_hist_tx interface
 """
 
 from ._version import __version__

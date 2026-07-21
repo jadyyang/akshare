@@ -1672,6 +1672,11 @@ print(hfq_factor_df)
 | low    | float64 | 最低价     |
 | amount | int64   | 注意单位: 手 |
 
+说明:
+
+- `symbol` 支持传入带市场前缀的代码, 如 `sz000001`
+- `symbol` 也支持传入纯 6 位 A 股代码, 如 `000001`, 接口内部会自动补全市场前缀
+
 接口示例-不复权
 
 ```python
@@ -8973,9 +8978,9 @@ print(stock_report_disclosure_df)
 
 目标地址: http://www.cninfo.com.cn/new/commonUrl/pageOfSearch?url=disclosure/list/search
 
-描述: 巨潮资讯-首页-公告查询-信息披露公告-沪深京
+描述: 巨潮资讯-首页-公告查询-信息披露公告
 
-限量: 单次获取指定 symbol 的信息披露公告数据
+限量: 单次获取指定 symbol 的信息披露公告数据; 无数据时返回空的 pandas.DataFrame
 
 输入参数
 
@@ -9026,9 +9031,9 @@ print(stock_zh_a_disclosure_report_cninfo_df)
 
 目标地址: http://www.cninfo.com.cn/new/commonUrl/pageOfSearch?url=disclosure/list/search
 
-描述: 巨潮资讯-首页-公告查询-信息披露调研-沪深京
+描述: 巨潮资讯-首页-公告查询-信息披露调研
 
-限量: 单次获取指定 symbol 的信息披露调研数据
+限量: 单次获取指定 symbol 的信息披露调研数据; 无数据时返回空的 pandas.DataFrame
 
 输入参数
 
