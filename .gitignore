@@ -89,3 +89,5 @@ docs/_build/
 .ak-sync-logs/
 .ak-sync-state.json
 scripts/ak_sync.env
+
+CLAUDE.md
