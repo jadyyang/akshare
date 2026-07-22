@@ -89,6 +89,53 @@
 
 ## 更新说明详情
 
+1.18.72 fix: fix stock_cg_lawsuit_cninfo interface
+
+	1. 修复 stock_cg_lawsuit_cninfo 接口
+
+1.18.71 fix: fix NBS macro interfaces
+
+	1. 修复 macro_china_urban_unemployment 接口
+	2. 修复 macro_china_nbs_nation 接口
+	3. 修复 macro_china_nbs_region 接口
+
+1.18.70 fix: fix stock_a_below_net_asset_statistics interface
+
+	1. 修复 stock_a_below_net_asset_statistics 接口
+
+1.18.69 fix: fix stock_zh_a_hist_tx interface
+
+	1. 修复 stock_zh_a_hist_tx 接口
+
+1.18.68 fix: fix index_realtime_sw interface
+
+	1. 修复 index_realtime_sw 接口
+
+1.18.67 fix: fix stock_zh_a_disclosure_report_cninfo interface
+
+	1. 修复 stock_zh_a_disclosure_report_cninfo 接口
+	2. 修复 stock_zh_a_disclosure_relation_cninfo 接口
+
+1.18.66 fix: fix stock_yysj_em interface
+
+	1. 修复 stock_yysj_em 接口
+
+1.18.65 fix: fix fund_portfolio_hold_em interface
+
+	1. 修复 fund_portfolio_hold_em 接口在 date="" 场景下的请求兼容问题
+	2. 修复 fund_portfolio_bond_hold_em 接口
+	3. 修复 fund_portfolio_change_em 接口
+
+1.18.64 fix: fix stock_buffett_index_lg interface
+
+	1. 修复 stock_buffett_index_lg 接口
+	2. 修复 stock_us_daily 接口
+	3. 修复 stock_hk_valuation_baidu 接口
+
+1.18.63 fix: fix stock_a_high_low_statistics interface
+
+	1. 修复 stock_a_high_low_statistics 接口
+
 1.18.62 fix: fix stock_market_activity_legu interface
 
 	1. 修复 stock_market_activity_legu 接口
@@ -6291,6 +6338,10 @@
     3. 修改 air_quality_hist 接口的请求日期格式，从 '2022-01-01' 为 '20220101'
 
 ## 版本更新说明
+
+1.18.64 fix: fix stock_buffett_index_lg interface
+
+1.18.63 fix: fix stock_a_high_low_statistics interface
 
 1.18.62 fix: fix stock_market_activity_legu interface
 

@@ -84,3 +84,10 @@ Thumbs.db
 # Documentation
 docs/build/
 docs/_build/
+
+# Sync automation
+.ak-sync-logs/
+.ak-sync-state.json
+scripts/ak_sync.env
+
+CLAUDE.md
