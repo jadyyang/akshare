@@ -12,40 +12,23 @@ from functools import lru_cache as functools_lru_cache
 from ..utils.redis_cache import lru_cache
 
 import pandas as pd
+import requests
 
 from ..utils.func import fetch_paginated_data
-from ..utils.request import get_session, get_tls_session, request_with_retry_tls
 
 
-def _em_headers(referer: str) -> dict:
-    # NOTE(akshare): 模拟浏览器 Referer/Origin，提高东财接口稳定性
-    return {
-        "Accept": "application/json, text/plain, */*",
-        "Origin": "https://quote.eastmoney.com",
-        "Referer": referer,
-    }
-
-
-@functools_lru_cache()
-def _em_session():
-    # NOTE(akshare): 复用 TLS Session 保持 Cookie（东财连续请求稳定性）
-    session = get_tls_session()
-    if session is None:
-        session = get_session()
-    return session
-
-
-@lru_cache(
-    func_key='em:gn_to_infos'
-)
-def __stock_board_concept_name_em() -> pd.DataFrame:
+def _fetch_stock_board_concept_name_em() -> pd.DataFrame:
     """
-    东方财富网-行情中心-沪深京板块-概念板块-名称
-    https://quote.eastmoney.com/center/boardlist.html#concept_board
-    :return: 概念板块-名称
+    获取东方财富概念板块名称列表。
+
+    :return: 概念板块名称列表
     :rtype: pandas.DataFrame
     """
-    url = "https://79.push2.eastmoney.com/api/qt/clist/get"
+    url_list = [
+        "https://79.push2.eastmoney.com/api/qt/clist/get",
+        "https://17.push2.eastmoney.com/api/qt/clist/get",
+        "https://push2.eastmoney.com/api/qt/clist/get",
+    ]
     params = {
         "pn": "1",
         "pz": "100",
@@ -56,18 +39,31 @@ def __stock_board_concept_name_em() -> pd.DataFrame:
         "invt": "2",
         "fid": "f12",
         "fs": "m:90 t:3 f:!50",
-        "fields": "f2,f3,f4,f8,f12,f14,f15,f16,f17,f18,f20,f21,f24,f25,f22,f33,f11,f62,f128,f124,f107,f104,f105,f136",
+        "fields": "f2,f3,f4,f8,f12,f14,f15,f16,f17,f18,f20,f21,f24,f25,"
+        "f22,f33,f11,f62,f128,f124,f107,f104,f105,f136",
     }
-    # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
-    temp_df = fetch_paginated_data(
-        url,
-        params,
-        headers=_em_headers(
-            "https://quote.eastmoney.com/center/boardlist.html#concept_board"
-        ),
-        session=_em_session(),
-        use_tls_impersonation=True,
-    )
+    last_exception = None
+    for url in url_list:
+        try:
+            return fetch_paginated_data(url, params)
+        except requests.RequestException as err:
+            last_exception = err
+    if last_exception is not None:
+        raise last_exception
+    return pd.DataFrame()
+
+
+@lru_cache(
+    func_key='em:sbcn',  # Unique key for caching
+)
+def __stock_board_concept_name_em() -> pd.DataFrame:
+    """
+    东方财富网-行情中心-沪深京板块-概念板块-名称
+    https://quote.eastmoney.com/center/boardlist.html#concept_board
+    :return: 概念板块-名称
+    :rtype: pandas.DataFrame
+    """
+    temp_df = _fetch_stock_board_concept_name_em()
     temp_df.columns = [
         "排名",
         "最新价",
@@ -133,85 +129,7 @@ def stock_board_concept_name_em() -> pd.DataFrame:
     :return: 概念板块-名称
     :rtype: pandas.DataFrame
     """
-    url = "https://79.push2.eastmoney.com/api/qt/clist/get"
-    params = {
-        "pn": "1",
-        "pz": "100",
-        "po": "1",
-        "np": "1",
-        "ut": "bd1d9ddb04089700cf9c27f6f7426281",
-        "fltt": "2",
-        "invt": "2",
-        "fid": "f12",
-        "fs": "m:90 t:3 f:!50",
-        "fields": "f2,f3,f4,f8,f12,f14,f15,f16,f17,f18,f20,f21,f24,f25,f22,f33,f11,f62,f128,f124,f107,f104,f105,f136",
-    }
-    # NOTE(akshare): 使用 TLS 指纹模拟请求东财接口
-    temp_df = fetch_paginated_data(
-        url,
-        params,
-        headers=_em_headers(
-            "https://quote.eastmoney.com/center/boardlist.html#concept_board"
-        ),
-        session=_em_session(),
-        use_tls_impersonation=True,
-    )
-    temp_df.columns = [
-        "排名",
-        "最新价",
-        "涨跌幅",
-        "涨跌额",
-        "换手率",
-        "_",
-        "板块代码",
-        "板块名称",
-        "_",
-        "_",
-        "_",
-        "_",
-        "总市值",
-        "_",
-        "_",
-        "_",
-        "_",
-        "_",
-        "_",
-        "上涨家数",
-        "下跌家数",
-        "_",
-        "_",
-        "领涨股票",
-        "_",
-        "_",
-        "领涨股票-涨跌幅",
-    ]
-    temp_df = temp_df[
-        [
-            "排名",
-            "板块名称",
-            "板块代码",
-            "最新价",
-            "涨跌额",
-            "涨跌幅",
-            "总市值",
-            "换手率",
-            "上涨家数",
-            "下跌家数",
-            "领涨股票",
-            "领涨股票-涨跌幅",
-        ]
-    ]
-    temp_df["最新价"] = pd.to_numeric(temp_df["最新价"], errors="coerce")
-    temp_df["涨跌额"] = pd.to_numeric(temp_df["涨跌额"], errors="coerce")
-    temp_df["涨跌幅"] = pd.to_numeric(temp_df["涨跌幅"], errors="coerce")
-    temp_df["总市值"] = pd.to_numeric(temp_df["总市值"], errors="coerce")
-    temp_df["换手率"] = pd.to_numeric(temp_df["换手率"], errors="coerce")
-    temp_df["上涨家数"] = pd.to_numeric(temp_df["上涨家数"], errors="coerce")
-    temp_df["下跌家数"] = pd.to_numeric(temp_df["下跌家数"], errors="coerce")
-    temp_df["领涨股票-涨跌幅"] = pd.to_numeric(
-        temp_df["领涨股票-涨跌幅"], errors="coerce"
-    )
-    return temp_df
+    return __stock_board_concept_name_em().copy()
 
 
 def stock_board_concept_spot_em(symbol: str = "可燃冰") -> pd.DataFrame:
