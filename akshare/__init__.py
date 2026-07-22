@@ -3287,7 +3287,7 @@ __author__ = "AKFamily"
 """
 腾讯证券-沪深京-实时行情数据
 """
-from akshare.stock.stock_zh_a_tx import stock_zh_a_spot_tx
+from .stock.stock_zh_a_tx import stock_zh_a_spot_tx
 
 """
 TapTap 游戏榜单

@@ -14,7 +14,7 @@ import pandas as pd
 import requests
 import py_mini_racer
 
-from akshare.exceptions import APIError
+from ..exceptions import APIError
 
 
 def _get_js_path(name: str = "", module_file: str = "") -> str:
