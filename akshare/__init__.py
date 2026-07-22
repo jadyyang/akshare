@@ -3288,11 +3288,7 @@ __author__ = "AKFamily"
 """
 京证券交易所融资融券数据
 """
-from akshare.stock_feature.stock_margin_bse import (
-    stock_margin_bse,
-    stock_margin_detail_bse,
-    stock_margin_underlying_info_bse,
-)
+from .stock_feature.stock_margin_bse import stock_margin_bse, stock_margin_detail_bse, stock_margin_underlying_info_bse
 
 """
 腾讯证券-沪深京-实时行情数据
@@ -4431,11 +4427,7 @@ from .stock_feature.stock_margin_szse import (
 """
 融资融券-北京证券交易所
 """
-from akshare.stock_feature.stock_margin_bse import (
-    stock_margin_bse,
-    stock_margin_detail_bse,
-    stock_margin_underlying_info_bse,
-)
+from .stock_feature.stock_margin_bse import stock_margin_bse, stock_margin_detail_bse, stock_margin_underlying_info_bse
 
 """
 英国-宏观
