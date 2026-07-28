@@ -12,8 +12,8 @@ from typing import Any
 import pandas as pd
 import requests
 
-from akshare.exceptions import APIError, NetworkError
-from akshare.utils.tqdm import get_tqdm
+from ..exceptions import APIError, NetworkError
+from ..utils.tqdm import get_tqdm
 
 
 def _get_xq_hot_headers() -> dict[str, str]:

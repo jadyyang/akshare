@@ -11,8 +11,8 @@ from typing import Any, Optional
 import pandas as pd
 import requests
 
-from akshare.exceptions import APIError, NetworkError
-from akshare.utils.cons import headers
+from ..exceptions import APIError, NetworkError
+from ..utils.cons import headers
 
 
 def _get_xq_company_data(
@@ -34,7 +34,7 @@ def _get_xq_company_data(
     :raises NetworkError: 网络请求异常
     :raises APIError: 上游接口返回异常或需要有效登录态
     """
-    from akshare.stock.cons import xq_a_token
+    from ..stock.cons import xq_a_token
 
     session = requests.Session()
     xq_token = token or xq_a_token

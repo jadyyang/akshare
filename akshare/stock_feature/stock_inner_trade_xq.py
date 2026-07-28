@@ -11,7 +11,7 @@ from typing import Any
 import pandas as pd
 import requests
 
-from akshare.exceptions import APIError, NetworkError
+from ..exceptions import APIError, NetworkError
 
 
 def _get_xq_inner_trade_data() -> dict[str, Any]:
