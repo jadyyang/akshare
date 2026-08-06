@@ -16,7 +16,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.exceptions import InvalidParameterError
+from ..exceptions import InvalidParameterError
 
 
 def stock_szse_summary(date: str = "20240830") -> pd.DataFrame:
