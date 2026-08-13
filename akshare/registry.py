@@ -12,8 +12,8 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 
-from akshare.datasets import get_registry_json
-from akshare.exceptions import DataParsingError, InvalidParameterError
+from .datasets import get_registry_json
+from .exceptions import DataParsingError, InvalidParameterError
 
 _REGISTRY: Optional[Dict] = None
 

@@ -5970,7 +5970,7 @@ from .utils.token_process import set_token, get_token
 """
 接口检索层
 """
-from akshare.registry import search, interface_info, list_categories
+from .registry import search, interface_info, list_categories
 
 """
 AKQMT 设置
