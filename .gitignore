@@ -91,3 +91,6 @@ docs/_build/
 scripts/ak_sync.env
 
 CLAUDE.md
+
+# superpowers SDD 工作区（本地临时产物）
+.superpowers/
