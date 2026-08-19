@@ -15,7 +15,8 @@ def get_ths_js(file: str = "ths.js") -> pathlib.Path:
     :return: 文件路径
     :rtype: pathlib.Path
     """
-    with resources.path("akshare.data", file) as f:
+    # with resources.path("akshare.data", file) as f:
+    with resources.path(f"{__package__}.data", file) as f:
         data_file_path = f
         return data_file_path
 
@@ -26,7 +27,8 @@ def get_crypto_info_csv(file: str = "crypto_info.zip") -> pathlib.Path:
     :return: 文件路径
     :rtype: pathlib.Path
     """
-    with resources.path("akshare.data", file) as f:
+    # with resources.path("akshare.data", file) as f:
+    with resources.path(f"{__package__}.data", file) as f:
         data_file_path = f
         return data_file_path
 
@@ -37,7 +39,8 @@ def get_registry_json(file: str = "interfaces.json") -> pathlib.Path:
     :return: 文件路径
     :rtype: pathlib.Path
     """
-    with resources.path("akshare.data", file) as f:
+    # with resources.path("akshare.data", file) as f:
+    with resources.path(f"{__package__}.data", file) as f:
         data_file_path = f
         return data_file_path
 
