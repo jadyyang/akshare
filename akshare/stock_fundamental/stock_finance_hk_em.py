@@ -11,7 +11,7 @@ from typing import Dict
 import pandas as pd
 import requests
 
-from akshare.exceptions import APIError
+from ..exceptions import APIError
 
 
 def _get_hk_financial_report_list(stock: str) -> pd.DataFrame:
