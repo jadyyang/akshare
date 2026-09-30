@@ -20,7 +20,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from akshare.exceptions import APIError
+from ..exceptions import APIError
 
 
 def futures_warehouse_receipt_czce(date: str = "20251103") -> dict:
