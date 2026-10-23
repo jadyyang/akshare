@@ -6,7 +6,7 @@
 **风险提示**：[AKShare](https://github.com/akfamily/akshare) 开源财经数据接口库所采集的数据皆来自公开的数据源，不涉及任何个人隐私数据和非公开数据。
 同时本项目提供的数据接口及相关数据仅用于学术研究，任何个人、机构及团体使用本项目的数据接口及相关数据请注意商业风险。
 
-1. 本文档更新时间：**2026-09-30**；
+1. 本文档更新时间：**2026-10-23**；
 2. 如有 [AKShare](https://github.com/akfamily/akshare) 库、文档及数据的相关问题，请在 [AKShare Issues](https://github.com/akfamily/akshare/issues) 中提 Issues；
 
 ## 引用
@@ -39,7 +39,7 @@
 [AKShare](https://github.com/akfamily/akshare) 主要改进如下：
 
 1. 代码语法符合 [PEP8](https://peps.python.org/pep-0008/) 规范，数据接口的命名统一；
-2. 最佳支持 Python 3.12 及其以上版本；
+2. 最佳支持 Python 3.13 及其以上版本；
 3. 提供最佳的文档支持，每个数据接口均提供详细的说明和示例，只需要复制粘贴就可以下载数据；
 4. 持续维护由于目标网页变化而导致的部分数据接口运行异常问题；
 5. 持续更新财经数据接口，同时优化源代码；
