@@ -41,7 +41,7 @@ def get_data_file(file: str) -> pathlib.Path:
     :return: 文件路径
     :rtype: pathlib.Path
     """
-    with resources.path("akshare.data", file) as f:
+    with resources.path(f"{__package__}.data", file) as f:
         data_file_path = f
         return data_file_path
 
