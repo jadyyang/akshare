@@ -1,23 +1,25 @@
-# [AKShare](https://github.com/akfamily/akshare) 贡献源码
+# 贡献指南
 
 ## 贡献指南
 
 ### 克隆及提交代码
 
-1. Fork [AKShare](https://github.com/akfamily/akshare) 仓库后克隆到本地，并切换到 [dev 分支](https://github.com/akfamily/akshare/tree/dev)，dev 分支中包含 AKShare 最新的开发代码
+1. Fork [AKShare](https://github.com/akfamily/akshare) 仓库后克隆到本地，在 main 分支的基础上新建一个分支进行修改，main 分支中包含 AKShare 最新的开发代码
 2. 安装 [uv](https://docs.astral.sh/uv/) 后，在仓库根目录运行 `uv sync` 安装开发环境，依赖版本由仓库中的 `uv.lock` 锁定
 3. 运行 `uv run pre-commit install` 安装提交前检查和提交信息检查两个 git 钩子
 4. 提交信息需要遵循 [Conventional Commits](https://www.conventionalcommits.org/zh-hans/) 规范，类型后面可以接中文描述，例如 `fix(index): 修复 index_all_cni 接口`
-5. 修改完成后向 dev 分支发起 Pull Request
+5. 修改完成后向 main 分支发起 Pull Request
 
 ### 代码及接口设计规范
 
 1. 代码需要符合 **PEP 8** 要求，由 [Ruff](https://github.com/astral-sh/ruff) 进行格式化和检查；提交时 pre-commit 会自动运行，也可以手动运行 `uv run ruff format .` 和 `uv run ruff check .`
 2. 函数接口的设计参考 **stock_zh_a_hist_tx** 的结构，其中 **stock** 为金融产品，**zh** 为国家或地区，**a** 为市场或品种，**hist** 为 history 的缩写表示历史数据，**tx** 表示数据源为腾讯；常见的数据源后缀还有 **em**（东方财富）、**sina**（新浪财经）、**ths**（同花顺）等
 3. 接口函数需要增加注释，注释规则请参考 **stock_zh_a_hist_tx** 接口的源码
-4. 新增的接口需要在 `akshare/__init__.py` 中导入，用户才能通过 `ak.接口名` 调用
-5. 需要在接口函数的注释中增加目标网站的地址（不是具体的数据接口地址，而是网页的地址）
-6. 返回数据格式要求：
+4. 新增的接口需要在 `akshare/__init__.py` 中对应类目的分组里导入，用户才能通过 `ak.接口名` 调用
+5. 模块放在与接口类目同名的子包中，文件名为“类目_主题_数据源.py”，例如期货接口放在 `akshare/futures/`，宏观接口放在 `akshare/macro/`；股票接口按数据字典的主题放在 `akshare/stock/quote/`、`finance/`、`holder/`、`issue/`、`valuation/`、`flow/`、`board/`、`research/`、`other/` 之一；一个模块只放同一类目的接口
+6. 内置的 JS、JSON 等数据文件放在 `akshare/data/`，通过 `akshare/datasets.py` 中的函数获取路径，不要按模块文件的相对位置拼接路径
+7. 需要在接口函数的注释中增加目标网站的地址（不是具体的数据接口地址，而是网页的地址）
+8. 返回数据格式要求：
    1. 为了兼容 HTTP API 接口，所有返回的数据格式统一为 Pandas 中的 pandas.DataFrame 格式
 
 ### 标点符号规范
@@ -41,8 +43,8 @@
 ### 文档撰写规范
 
 1. 在新增或者修改接口后，需要修改相对应的接口文档，保持接口与文档的同步更新；
-2. 具体的接口文档路径（以股票接口的文档为例）为：akshare->docs->data->stock->stock.md，其中 stock 表示股票文件夹，stock.md 为具体的 Markdown 文件，需要在 stock.md 中对相应的接口文档进行修改或新增；
-3. 每个接口使用三级标题（`###`），放在对应的二级标题（`##`）分类下面，标题层级不能跳级；
+2. 接口文档位于 `docs/data/类目/` 目录下，一般每个类目一个 Markdown 文件，例如期货接口在 `docs/data/futures/futures.md`；股票和宏观数据按主题拆分为多个文件，例如股票行情接口在 `docs/data/stock/stock_quote.md`，请放到主题对应的文件中；目录名就是 `ak.search()` 中的类目名，不能修改；
+3. 每个接口使用三级标题（`###`），放在对应的二级标题（`##`）分类下面，标题层级不能跳级；标题前一行写 `(接口名)=` 作为固定锚点，例如 `(stock_zh_a_minute)=`，缺少时 CI 会报错；
 4. 以股票分时数据接口文档为例：
    1. 主要包含以下部分内容：
       1. 接口：填写具体的接口名称
@@ -57,6 +59,7 @@
    2. 示例如下：
 
 ````markdown
+(stock_zh_a_minute)=
 ### 分时数据-新浪
 
 接口：stock_zh_a_minute
@@ -114,6 +117,13 @@ print(stock_zh_a_minute_df)
 [1970 rows x 7 columns]
 ```
 ````
+
+### 依赖选择说明
+
+依赖及版本要求以 `pyproject.toml` 为准，这里说明两个关键依赖的选型原因：
+
+1. mini-racer：用于执行数据源网页中的 JavaScript 解密代码。Windows 和 macOS 上安装 [mini-racer](https://pypi.org/project/mini-racer/)（>=0.12.4），Linux 上安装 [py-mini-racer](https://pypi.org/project/py-mini-racer/)（>=0.6.0）和 [akracer](https://pypi.org/project/akracer/)（>=0.0.13），由 pip 按平台自动选择。没有选用 PyExecJS，因为它自 2018 年起停止维护；也没有选用 Js2Py，因为它运行部分 JavaScript 代码时不稳定
+2. pandas：用于采集后的数据清洗，要求 >=2.0.0，推荐使用最新版，AKShare 会优先支持最新版本
 
 ## 声明
 

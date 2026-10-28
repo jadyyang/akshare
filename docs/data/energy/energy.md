@@ -1,7 +1,8 @@
-# [AKShare](https://github.com/akfamily/akshare) 能源数据
+# 能源数据
 
 ## 碳排放
 
+(energy_carbon_domestic)=
 ### 碳排放权-国内
 
 接口：energy_carbon_domestic
@@ -54,6 +55,7 @@ print(energy_carbon_domestic_df)
 1851  2021-03-23  30.350000     100.0  3.508000e+03  湖北
 ```
 
+(energy_carbon_bj)=
 ### 碳排放权-北京
 
 接口：energy_carbon_bj
@@ -62,7 +64,9 @@ print(energy_carbon_domestic_df)
 
 描述：北京市碳排放权电子交易平台-北京市碳排放权公开交易行情
 
-注意：注意在 2017-08-08 日的数据有误 70.074.00（BEA）
+```{note}
+在 2017-08-08 日的数据有误 70.074.00（BEA）
+```
 
 限量：全部历史数据
 
@@ -108,6 +112,7 @@ print(energy_carbon_bj_df)
 1460  2022-03-02     100  62.00     6200.0   BEA
 ```
 
+(energy_carbon_sz)=
 ### 碳排放权-深圳
 
 接口：energy_carbon_sz
@@ -164,6 +169,7 @@ print(energy_carbon_sz_df)
 199  2022-03-03  SZA-2020   4.78    NaN    NaN    NaN   4.78    0   0.00
 ```
 
+(energy_carbon_eu)=
 ### 碳排放权-国际
 
 接口：energy_carbon_eu
@@ -220,6 +226,7 @@ print(energy_carbon_eu_df)
 1001  2020-04-29  欧盟CER  NaN  NaN  NaN   NaN   0.25     96000.0  NaN
 ```
 
+(energy_carbon_hb)=
 ### 碳排放权-湖北
 
 接口：energy_carbon_hb
@@ -273,6 +280,7 @@ print(energy_carbon_hb_df)
 [2438 rows x 5 columns]
 ```
 
+(energy_carbon_gz)=
 ### 碳排放权-广州
 
 接口：energy_carbon_gz
@@ -332,6 +340,7 @@ print(energy_carbon_gz_df)
 
 ## 中国油价
 
+(energy_oil_hist)=
 ### 汽柴油历史调价信息
 
 接口：energy_oil_hist
@@ -385,6 +394,7 @@ print(energy_oil_hist_df)
 [277 rows x 5 columns]
 ```
 
+(energy_oil_detail)=
 ### 地区油价
 
 接口：energy_oil_detail

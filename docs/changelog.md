@@ -1,4 +1,4 @@
-# [AKShare](https://github.com/akfamily/akshare) 版本更新
+# 更新日志
 
 ## 接口更名一览表
 
@@ -88,6 +88,27 @@
 | 1.4.86       | fund_em_aum                                 | fund_aum_em                                 | 20220322 |
 
 ## 更新说明详情
+
+1.20.0 refactor!: reorganize subpackages by interface category
+
+    1. 重新整理 `akshare/` 目录，不兼容旧的模块路径：子包名与 `ak.search()` 的类目名一一对应，股票接口按数据字典的 9 个主题分到 `akshare/stock/` 下的子目录，文件名统一为“类目_主题_数据源.py”。`ak.接口名()` 与 `from akshare import 接口名` 的用法不受影响；按 `from akshare.子包.模块 import 接口名` 导入的代码需要按 [AKShare 1.20.0 模块路径迁移](https://akshare.akfamily.xyz/migration.html) 中的对照表修改
+    2. 拆分接口跨类目的 3 个模块：bond_china_money、macro_other、news_baidu
+    3. 删除从未对外导出的失效或未完成代码：futures_rule_em、stock_kcb_renewal、stock_kcb_detail_renewal，以及 3 个未被使用的常量文件
+    4. 新增 fortune_rank 接口：历年《财富》世界 500 强榜单（1996 年至今），各年份输出统一为固定的 9 列
+    5. `akshare/__init__.py` 不再保留版本历史（完整记录见本页），导入语句按类目分组，文件由 7077 行减为约 2500 行
+    6. 内置数据文件统一放到 `akshare/data/`，通过 `akshare/datasets.py` 加载
+
+1.19.7 refactor!: rename interface categories
+
+    1. 统一 `ak.search()`、`ak.interface_info()`、`ak.list_categories()` 中的类目名，不兼容旧类目名：dc 改为 crypto，event 改为 migration，article 改为 research，others 改为 alternative，tool 改为 calendar，hf 改为 high_freq
+    2. 没有文档条目的接口不再按代码子包单独成类：stock_feature、stock_fundamental 并入 stock，futures_derivative 并入 futures，reits 并入 fund，cal 改为 indicator；类目数由 25 个减为 22 个
+    3. 接口函数名不变；按旧类目名传入 `category=` 会返回空表，请改用新类目名
+    4. 数据字典对应页面的网址随目录改名，旧网址自动跳转
+
+1.19.6 remove: remove nlp_ownthink interface
+
+    1. 移除思知知识图谱接口 nlp_ownthink：思知网站已下线知识图谱 API，请求会被重定向到网站首页，接口报 `JSONDecodeError`
+    2. 同一数据源的智能问答接口 nlp_answer 仍可正常使用，不受影响
 
 1.19.5 perf: speed up search interface
 

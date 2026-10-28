@@ -1,4 +1,4 @@
-# [AKShare](https://github.com/akfamily/akshare) 期货数据
+# 期货数据
 
 ## 期货基础信息
 
@@ -17,7 +17,7 @@
 
 ### 期货交易时间
 
-**本表格更新于 20241118**
+本表更新于 2024-11-18。
 
 | 交易所        | 交易所代码 | 品种名称     | 品种代码 | 集合竞价                     | 日盘时间                                  | 夜盘时间        |
 |------------|-------|----------|------|--------------------------|---------------------------------------|-------------|
@@ -108,7 +108,7 @@
 
 #### 中国金融期货交易所
 
-**本表更新于 20241118**
+本表更新于 2024-11-18。
 
 |   | 交易所简称     | 交易品种       | 证券代码 | 标准合约上市日    |
 |--:|:----------|:-----------|:-----|:-----------|
@@ -125,7 +125,7 @@
 
 #### 上海国际能源交易中心
 
-**本表更新于 20241118**
+本表更新于 2024-11-18。
 
 |   | 交易所简称      | 交易品种     | 证券代码 | 标准合约上市日    |
 |--:|:-----------|:---------|:-----|:-----------|
@@ -137,7 +137,7 @@
 
 #### 上海期货交易所
 
-**本表更新于 20241118**
+本表更新于 2024-11-18。
 
 |    | 交易所简称   | 交易品种  | 证券代码 | 标准合约上市日    |
 |---:|:--------|:------|:-----|:-----------|
@@ -162,7 +162,7 @@
 
 #### 郑州商品交易所
 
-**本表更新于 20241118**
+本表更新于 2024-11-18。
 
 |    | 交易所简称   | 交易品种 | 证券代码 | 标准合约上市日    |
 |---:|:--------|:-----|:-----|:-----------|
@@ -195,7 +195,7 @@
 
 #### 大连商品交易所
 
-**本表更新于 20241118**
+本表更新于 2024-11-18。
 
 |    | 交易所简称   | 交易品种  | 证券代码 | 标准合约上市日    |
 |---:|:--------|:------|:-----|:-----------|
@@ -224,7 +224,7 @@
 
 #### 广州期货交易所
 
-**本表更新于 20241118**
+本表更新于 2024-11-18。
 
 |   | 交易所简称   | 交易品种 | 证券代码 | 标准合约上市日    |
 |--:|:--------|:-----|:-----|:-----------|
@@ -288,6 +288,7 @@
 
 ## 期货基础数据
 
+(futures_fees_info)=
 ### 期货交易费用参照表
 
 接口：futures_fees_info
@@ -372,6 +373,7 @@ print(futures_fees_info_df)
 [769 rows x 36 columns]
 ```
 
+(futures_comm_info)=
 ### 期货手续费与保证金
 
 接口：futures_comm_info
@@ -441,6 +443,7 @@ print(futures_comm_info_df)
 [700 rows x 21 columns]
 ```
 
+(futures_comm_js)=
 #### 金十数据
 
 接口：futures_comm_js
@@ -507,6 +510,7 @@ print(futures_comm_js_df)
 [90 rows x 18 columns]
 ```
 
+(futures_rule)=
 ### 期货规则-交易日历表
 
 接口：futures_rule
@@ -565,6 +569,7 @@ print(futures_rule_df)
 [122 rows x 10 columns]
 ```
 
+(futures_inventory_99)=
 ### 库存数据-99期货网
 
 接口：futures_inventory_99
@@ -616,6 +621,7 @@ print(futures_inventory_99_df)
 [4019 rows x 3 columns]
 ```
 
+(futures_inventory_em)=
 ### 库存数据-东方财富
 
 接口：futures_inventory_em
@@ -713,7 +719,9 @@ import akshare as ak
 ak.get_roll_yield(date="20180718", var="IF", symbol1="IF1812", symbol2="IF1811")  # 需要收盘收运行
 ```
 
-注意：1. 主力合约和次主力合约的定义，是由该日的各交割月合约持仓量由大到小排序得到。
+```{note}
+主力合约和次主力合约的定义，是由该日的各交割月合约持仓量由大到小排序得到。
+```
 
 ### 注册仓单
 
@@ -725,13 +733,13 @@ import akshare as ak
 ak.get_receipt(start_date="20180712", end_date="20180719", vars_list=["CU", "NI"])
 ```
 
-注意：
-
+```{note}
 1. vars_list 变量接上需要爬取的品种列表，即使是一个品种，也需要以列表形式输入；
 
 2. 在研究仓单的方向变化时，需要考虑一些品种的年度周期性，如农产品的收割季、工业品的开工季等；
 
 3. 需考虑到交割日的仓单变化。
+```
 
 ### 现货价格和基差
 
@@ -891,7 +899,9 @@ print(futures_spot_price_daily_df)
 [8 rows x 11 columns]
 ```
 
-注意：1. 现货价格是从生意社网站采集的，仅支持从 2011 年至今每个交易日数据。
+```{note}
+现货价格是从生意社网站采集的，仅支持从 2011 年至今每个交易日数据。
+```
 
 ### 会员持仓排名
 
@@ -925,21 +935,26 @@ get_rank_table_czce_df = ak.get_rank_table_czce(date='20200213')
 print(get_rank_table_czce_df)
 ```
 
-注意：
+```{note}
+1. 因为每个交易所公布的持仓排名不同：大连商品交易所只公布品种的总持仓排名；
 
-    1. 因为每个交易所公布的持仓排名不同：大连商品交易所只公布品种的总持仓排名；
+2. 没有按不同交割月划分；上海、中金交易所公布了每个交割月的持仓排名，没有公布品种所有合约总排名；
 
-    2. 没有按不同交割月划分；上海、中金交易所公布了每个交割月的持仓排名，没有公布品种所有合约总排名；
+3. 因此这里的品种排名和是各合约加总计算得来；郑州交易所公布了各合约排名和品种排名，因此这里都是交易所原始数据。
+```
 
-    3. 因此这里的品种排名和是各合约加总计算得来；郑州交易所公布了各合约排名和品种排名，因此这里都是交易所原始数据。
-
+(futures_dce_position_rank)=
 #### 大连商品交易所
+
+```{warning}
+大连商品交易所网站目前启用了瑞数反爬虫验证，该接口暂时无法获取数据，详见{ref}`AKShare 常见问题 <faq-dce>`。
+```
 
 接口：futures_dce_position_rank
 
 目标地址：http://www.dce.com.cn/dalianshangpin/xqsj/tjsj26/rtj/rcjccpm/index.html
 
-描述：大连商品交易所指定交易日的具体合约的持仓排名；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/answer.html)
+描述：大连商品交易所指定交易日的具体合约的持仓排名；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/faq.html#faq-dce)
 
 限量：单次返回所有合约的持仓排名数据，返回以合约名字为键，具体排名数据为值的字典
 
@@ -998,6 +1013,7 @@ print(futures_dce_detail_dict)
 }
 ```
 
+(futures_gfex_position_rank)=
 #### 广州期货交易所
 
 接口：futures_gfex_position_rank
@@ -1135,6 +1151,7 @@ print(futures_gfex_position_rank_dict)
 
 ### 仓单日报
 
+(futures_warehouse_receipt_czce)=
 #### 仓单日报-郑州商品交易所
 
 接口：futures_warehouse_receipt_czce
@@ -1224,13 +1241,18 @@ print(futures_warehouse_receipt_czce_df)
 372    总计   NaN   NaN   NaN  NaN  20641  -261  2203}
 ```
 
+(futures_warehouse_receipt_dce)=
 #### 仓单日报-大连商品交易所
+
+```{warning}
+大连商品交易所网站目前启用了瑞数反爬虫验证，该接口暂时无法获取数据，详见{ref}`AKShare 常见问题 <faq-dce>`。
+```
 
 接口：futures_warehouse_receipt_dce
 
 目标地址：http://www.dce.com.cn/dce/channel/list/187.html
 
-描述：大连商品交易所-行情数据-统计数据-日统计-仓单日报；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），此时接口抛出 APIError，详见[常见问题](https://akshare.akfamily.xyz/answer.html)
+描述：大连商品交易所-行情数据-统计数据-日统计-仓单日报；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），此时接口抛出 APIError，详见[常见问题](https://akshare.akfamily.xyz/faq.html#faq-dce)
 
 限量：单次返回当前交易日的所有仓单日报数据
 
@@ -1278,6 +1300,7 @@ print(futures_warehouse_receipt_dce_df)
 190  None    总计    None         None    315072    314394   -678
 ```
 
+(futures_shfe_warehouse_receipt)=
 #### 仓单日报-上海期货交易所
 
 接口：futures_shfe_warehouse_receipt
@@ -1332,6 +1355,7 @@ print(futures_shfe_warehouse_receipt_df["螺纹钢仓库"])
 16   螺纹钢仓库                 总计     85813      12396         2
 ```
 
+(futures_gfex_warehouse_receipt)=
 #### 仓单日报-广州期货交易所
 
 接口：futures_gfex_warehouse_receipt
@@ -1409,13 +1433,18 @@ print(futures_gfex_warehouse_receipt_df)
 26  工业硅  厦门国贸（外运天津滨海）    660    660    0}
 ```
 
+(futures_to_spot_dce)=
 ### 期转现-大商所
+
+```{warning}
+大连商品交易所网站目前启用了瑞数反爬虫验证，该接口暂时无法获取数据，详见{ref}`AKShare 常见问题 <faq-dce>`。
+```
 
 接口：futures_to_spot_dce
 
 目标地址：http://www.dce.com.cn/dalianshangpin/xqsj/tjsj26/jgtj/qzxcx/index.html
 
-描述：大连商品交易所-期转现统计数据；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/answer.html)
+描述：大连商品交易所-期转现统计数据；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/faq.html#faq-dce)
 
 限量：单次返回指定交易日的期转现统计数据
 
@@ -1451,6 +1480,7 @@ print(futures_to_spot_dce_df)
 2  eb2312  2023-12-20    176
 ```
 
+(futures_to_spot_czce)=
 ### 期转现-郑商所
 
 接口：futures_to_spot_czce
@@ -1491,6 +1521,7 @@ print(futures_to_spot_czce_df)
 1  CJ401    10
 ```
 
+(futures_to_spot_shfe)=
 ### 期转现-上期所
 
 接口：futures_to_spot_shfe
@@ -1516,10 +1547,11 @@ print(futures_to_spot_czce_df)
 | 交割量  | float64 | -  |
 | 期转现量 | float64 | -  |
 
-注意：
+```{note}
+1. 铜、铜(BC)、铝、锌、铅、镍、锡、螺纹钢、线材、热轧卷板、天然橡胶、20号胶、低硫燃料油、燃料油、石油沥青、纸浆、不锈钢的数量单位为：吨；黄金的数量单位为：克；白银的数量单位为：千克；原油的数量单位为：桶。
 
-1 铜、铜(BC)、铝、锌、铅、镍、锡、螺纹钢、线材、热轧卷板、天然橡胶、20号胶、低硫燃料油、燃料油、石油沥青、纸浆、不锈钢的数量单位为：吨；黄金的数量单位为：克；白银的数量单位为：千克；原油的数量单位为：桶。
-2 交割量、期转现量为单向计算。
+2. 交割量、期转现量为单向计算。
+```
 
 接口示例
 
@@ -1566,13 +1598,18 @@ print(futures_to_spot_shfe_df)
 29  2023-12-15  sp2312   70060.0     0.0
 ```
 
+(futures_delivery_dce)=
 ### 交割统计-大商所
+
+```{warning}
+大连商品交易所网站目前启用了瑞数反爬虫验证，该接口暂时无法获取数据，详见{ref}`AKShare 常见问题 <faq-dce>`。
+```
 
 接口：futures_delivery_dce
 
 目标地址：http://www.dce.com.cn/dalianshangpin/xqsj/tjsj26/jgtj/jgsj/index.html
 
-描述：大连商品交易所-交割统计；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/answer.html)
+描述：大连商品交易所-交割统计；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/faq.html#faq-dce)
 
 限量：单次返回指定交易月份的交割统计数据
 
@@ -1635,6 +1672,7 @@ print(futures_delivery_dce_df)
 27     豆油   y2312  2023-12-19     67    5496680
 ```
 
+(futures_delivery_czce)=
 ### 交割统计-郑商所
 
 接口：futures_delivery_czce
@@ -1681,6 +1719,7 @@ print(futures_delivery_monthly_czce_df)
 6      合计  2050  137920670
 ```
 
+(futures_delivery_shfe)=
 ### 交割统计-上期所
 
 接口：futures_delivery_shfe
@@ -1746,13 +1785,18 @@ print(futures_delivery_shfe_df)
 23       总计   46767  100.000000    939027   14.213102
 ```
 
+(futures_delivery_match_dce)=
 ### 交割配对-大商所
+
+```{warning}
+大连商品交易所网站目前启用了瑞数反爬虫验证，该接口暂时无法获取数据，详见{ref}`AKShare 常见问题 <faq-dce>`。
+```
 
 接口：futures_delivery_match_dce
 
 目标地址：http://www.dce.com.cn/dalianshangpin/xqsj/tjsj26/jgtj/jgsj/index.html
 
-描述：大连商品交易所-交割配对；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/answer.html)
+描述：大连商品交易所-交割配对；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/faq.html#faq-dce)
 
 限量：单次返回指定品种的的交割配对数据
 
@@ -1773,12 +1817,15 @@ print(futures_delivery_shfe_df)
 | 卖会员号  | str     | -  |
 | 交割结算价 | float64 | -  |
 
-注意：
+```{note}
+1. 价格：自2019年12月02日起，纤维板报价单位由元/张改为元/立方米
 
-1 价格：自2019年12月02日起，纤维板报价单位由元/张改为元/立方米
-2 配对手数：手
-3 交割结算价：元/吨，鸡蛋为元/500千克，纤维板为元/立方米、胶合板为元/张
-4 *为非期货公司会员
+2. 配对手数：手
+
+3. 交割结算价：元/吨，鸡蛋为元/500千克，纤维板为元/立方米、胶合板为元/张
+
+4. *为非期货公司会员
+```
 
 接口示例
 
@@ -1807,6 +1854,7 @@ print(futures_delivery_match_dce_df)
 [1420 rows x 6 columns]
 ```
 
+(futures_delivery_match_czce)=
 ### 交割配对-郑商所
 
 接口：futures_delivery_match_czce
@@ -1879,6 +1927,7 @@ print(futures_delivery_match_czce_df)
 
 ### 库存周报
 
+(futures_stock_shfe_js)=
 #### 上海期货交易所
 
 接口：futures_stock_shfe_js
@@ -1938,6 +1987,7 @@ print(futures_stock_shfe_js_df)
 17       20号胶          141624          140737     887   0.63
 ```
 
+(futures_hold_pos_sina)=
 ### 成交持仓
 
 接口：futures_hold_pos_sina
@@ -2000,6 +2050,7 @@ print(futures_hold_pos_sina_df)
 19  20    东方财富（代客）   7220  -1248.0
 ```
 
+(futures_spot_sys)=
 ### 现期图
 
 接口：futures_spot_sys
@@ -2120,6 +2171,7 @@ print(futures_spot_sys_df)
 
 ### 合约信息
 
+(futures_contract_info_shfe)=
 #### 上海期货交易所
 
 接口：futures_contract_info_shfe
@@ -2176,6 +2228,7 @@ print(futures_contract_info_shfe_df)
 [276 rows x 8 columns]
 ```
 
+(futures_contract_info_ine)=
 #### 上海国际能源交易中心
 
 接口：futures_contract_info_ine
@@ -2231,13 +2284,18 @@ print(futures_contract_info_ine_df)
 [62 rows x 7 columns]
 ```
 
+(futures_contract_info_dce)=
 #### 大连商品交易所
+
+```{warning}
+大连商品交易所网站目前启用了瑞数反爬虫验证，该接口暂时无法获取数据，详见{ref}`AKShare 常见问题 <faq-dce>`。
+```
 
 接口：futures_contract_info_dce
 
 目标地址：http://www.dce.com.cn/dce/channel/list/180.html
 
-描述：大连商品交易所-数据中心-业务数据-交易参数-合约信息；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/answer.html)
+描述：大连商品交易所-数据中心-业务数据-交易参数-合约信息；大连商品交易所网站目前启用了瑞数反爬虫验证，程序请求会被拒绝（HTTP 412），该接口暂时无法使用，详见[常见问题](https://akshare.akfamily.xyz/faq.html#faq-dce)
 
 限量：单次返回最近交易日的期货合约信息数据
 
@@ -2286,6 +2344,7 @@ print(futures_contract_info_dce_df)
 [237 rows x 7 columns]
 ```
 
+(futures_contract_info_czce)=
 #### 郑州商品交易所
 
 接口：futures_contract_info_czce
@@ -2374,6 +2433,7 @@ print(futures_contract_info_czce_df)
 [218 rows x 40 columns]
 ```
 
+(futures_contract_info_gfex)=
 #### 广州期货交易所
 
 接口：futures_contract_info_gfex
@@ -2437,6 +2497,7 @@ print(futures_contract_info_gfex_df)
 19  工业硅  si2410     5       5  2024-02-23  2024-10-21  2024-10-24
 ```
 
+(futures_contract_info_cffex)=
 #### 中国金融期货交易所
 
 接口：futures_contract_info_cffex
@@ -2499,6 +2560,7 @@ print(futures_contract_info_cffex_df)
 
 ## 期货行情数据
 
+(futures_zh_spot)=
 ### 内盘-实时行情数据
 
 接口：futures_zh_spot
@@ -2685,6 +2747,7 @@ while True:
 3  113365.000  73086  353463074.600
 ```
 
+(futures_zh_realtime)=
 ### 内盘-实时行情数据（品种）
 
 接口：futures_zh_realtime
@@ -2785,6 +2848,7 @@ print(big_df)
 569  TS2212    cffex    2年期国债期货2212  ...  0.0  0.0          100.92
 ```
 
+(futures_zh_minute_sina)=
 ### 内盘-分时行情数据
 
 接口：futures_zh_minute_sina
@@ -2841,6 +2905,7 @@ print(futures_zh_minute_sina_df)
 [1023 rows x 7 columns]
 ```
 
+(futures_hist_em)=
 ### 内盘-历史行情数据-东财
 
 接口：futures_hist_em
@@ -2902,6 +2967,7 @@ print(futures_hist_em_df)
 [2641 rows x 10 columns]
 ```
 
+(futures_zh_daily_sina)=
 ### 内盘-历史行情数据-新浪
 
 接口：futures_zh_daily_sina
@@ -2985,13 +3051,18 @@ print(futures_zh_daily_sina_df)
 [115 rows x 8 columns]
 ```
 
+(get_futures_daily)=
 ### 内盘-历史行情数据-交易所
+
+```{warning}
+其中 `market="DCE"`（大连商品交易所）目前因瑞数反爬虫验证无法获取数据，其他交易所不受影响，详见{ref}`AKShare 常见问题 <faq-dce>`。
+```
 
 接口：get_futures_daily
 
 目标地址：各交易所网站
 
-描述：提供各交易所各品种的网站的历史行情数据，其中 20040625, 20070604, 20081226, 20090119 原网页数据缺失；其中 market="DCE"（大连商品交易所）目前因瑞数反爬虫验证无法获取数据（HTTP 412），详见[常见问题](https://akshare.akfamily.xyz/answer.html)
+描述：提供各交易所各品种的网站的历史行情数据，其中 20040625, 20070604, 20081226, 20090119 原网页数据缺失；其中 market="DCE"（大连商品交易所）目前因瑞数反爬虫验证无法获取数据（HTTP 412），详见[常见问题](https://akshare.akfamily.xyz/faq.html#faq-dce)
 
 限量：单次返回指定时间段指定交易所的所有期货品种历史数据
 
@@ -3046,6 +3117,7 @@ print(get_futures_daily_df)
 2753   JM99  20200716  1193.58  ...  1195.49    1197.92      JM
 ```
 
+(futures_settle)=
 ### 内盘-结算参数数据
 
 接口：futures_settle
@@ -3115,6 +3187,7 @@ print(futures_settle_df)
 [62 rows x 20 columns]
 ```
 
+(futures_hq_subscribe_exchange_symbol)=
 ### 外盘-品种代码表
 
 接口：futures_hq_subscribe_exchange_symbol
@@ -3179,6 +3252,7 @@ print(futures_hq_subscribe_exchange_symbol_df)
 25     欧洲碳排放   EUA
 ```
 
+(futures_foreign_commodity_realtime)=
 ### 外盘-实时行情数据
 
 接口：futures_foreign_commodity_realtime
@@ -3282,6 +3356,7 @@ while True:
 [29 rows x 14 columns]
 ```
 
+(futures_global_spot_em)=
 ### 外盘-实时行情数据-东财
 
 接口：futures_global_spot_em
@@ -3344,6 +3419,7 @@ print(futures_global_spot_em_df)
 [620 rows x 14 columns]
 ```
 
+(futures_global_hist_em)=
 ### 外盘-历史行情数据-东财
 
 接口：futures_global_hist_em
@@ -3403,6 +3479,7 @@ print(futures_global_hist_em_df)
 [3485 rows x 11 columns]
 ```
 
+(futures_foreign_hist)=
 ### 外盘-历史行情数据-新浪
 
 接口：futures_foreign_hist
@@ -3457,6 +3534,7 @@ print(futures_foreign_hist_df)
 [2546 rows x 8 columns]
 ```
 
+(futures_foreign_detail)=
 ### 外盘-合约详情
 
 接口：futures_foreign_detail
@@ -3508,6 +3586,7 @@ print(futures_foreign_detail_df)
 3    交易代码                             ZSD  ...    附加信息                     NaN
 ```
 
+(futures_settlement_price_sgx)=
 ### 新加坡交易所期货
 
 接口：futures_settlement_price_sgx
@@ -3568,6 +3647,7 @@ print(futures_settlement_price_sgx_df)
 [3170 rows x 12 columns]
 ```
 
+(futures_main_sina)=
 ## 期货连续合约
 
 接口：futures_main_sina
@@ -3723,6 +3803,7 @@ print(futures_display_main_sina_df)
 62    TS0    cffex    2年期国债期货连续
 ```
 
+(futures_contract_detail)=
 ## 期货合约详情-新浪
 
 接口：futures_contract_detail
@@ -3857,6 +3938,7 @@ print(futures_contract_detail_df)
 14    上市交易所                                            大连商品交易所
 ```
 
+(futures_contract_detail_em)=
 ## 期货合约详情-东财
 
 接口：futures_contract_detail_em
@@ -3912,6 +3994,7 @@ print(futures_contract_detail_em_df)
 
 ## 中证商品指数
 
+(futures_index_ccidx)=
 ### 中证商品指数
 
 接口：futures_index_ccidx
@@ -3966,6 +4049,7 @@ print(futures_index_ccidx_df)
 [965 rows x 6 columns]
 ```
 
+(futures_spot_stock)=
 ## 现货与股票
 
 接口：futures_spot_stock
@@ -4020,6 +4104,7 @@ print(futures_spot_stock_df)
 [7 rows x 10 columns]
 ```
 
+(futures_comex_inventory)=
 ## COMEX 库存数据
 
 接口：futures_comex_inventory
@@ -4074,6 +4159,7 @@ print(futures_comex_inventory_df)
 
 ## 生猪信息
 
+(futures_hog_core)=
 ### 核心数据
 
 接口：futures_hog_core
@@ -4124,6 +4210,7 @@ print(futures_hog_core_df)
 [367 rows x 2 columns]
 ```
 
+(futures_hog_cost)=
 ### 成本维度
 
 接口：futures_hog_cost
@@ -4174,6 +4261,7 @@ print(futures_hog_cost_df)
 [367 rows x 2 columns]
 ```
 
+(futures_hog_supply)=
 ### 供应维度
 
 接口：futures_hog_supply
@@ -4224,6 +4312,7 @@ print(futures_hog_supply_df)
 [90 rows x 2 columns]
 ```
 
+(index_hog_spot_price)=
 ## 生猪市场价格指数
 
 接口：index_hog_spot_price
@@ -4280,6 +4369,7 @@ print(index_hog_spot_price_df)
 [465 rows x 8 columns]
 ```
 
+(futures_news_shmet)=
 ## 期货资讯
 
 接口：futures_news_shmet
