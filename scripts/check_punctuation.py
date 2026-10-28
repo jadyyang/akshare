@@ -204,7 +204,7 @@ def editable_spans(source: str) -> List[Tuple[int, int, bool]]:
     :param source: 源码文本
     :return: 按起点升序排列的 (start, end, is_string) 三元组列表
     """
-    # 按 "\n" 切分而非 splitlines(): 后者还会在 \x0b \x0c   等处断行，与
+    # 按 "\n" 切分而非 splitlines(): 后者还会在 \x0b \x0c  等处断行，与
     # tokenize 只按 \n 计行的口径不一致，一旦正文里出现这些字符就会整体错位。
     offsets = [0]
     for part in source.split("\n"):
